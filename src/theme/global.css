@@ -1,0 +1,682 @@
+/* ── Pixel font fallback ── */
+/* Load Minecrafta-Regular from local assets */
+@font-face {
+  font-family: 'Minecrafta-Regular';
+  src: url('/src/assets/fonts/Minecrafta-Regular.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
+:root {
+  --blue-light: #54d4ff;
+  --blue-dark: #007ea8;
+  --amber: #fcdc2c;
+  --brown: #884000;
+  --panel-bg: rgba(107, 107, 107, 0.55);
+  --border-col: #884000;
+  --font: 'Minecrafta-Regular', monospace;
+  --text-shadow: 0 4px 4px rgba(0, 0, 0, 0.35);
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body,
+html {
+  height: 100%;
+  width: 100%;
+  overflow: hidden;
+  background: #000;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+body {
+  font-family: var(--font);
+}
+
+/* ── SCREEN CONTAINER ── */
+.screen {
+  position: relative;
+  width: 100%;
+  max-width: 440px;
+  height: 100vh;
+  max-height: 956px;
+  overflow: hidden;
+  font-family: var(--font);
+  background: #1a6ba4;
+  display: flex;
+  flex-direction: column;
+}
+
+/* ── BACKGROUND ── */
+.scene-bg {
+  position: absolute;
+  inset: 0;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+.welcome-bg {
+  background-image: url('https://www.figma.com/api/mcp/asset/8f6c0bbe-0f16-4b61-9398-51e567e6ed5f');
+}
+
+.ocean-bg {
+  background-image: url('https://www.figma.com/api/mcp/asset/15cd351d-f187-4245-8d77-f970dc23dd8c');
+}
+
+/* Game screen background (local asset) */
+.game-bg {
+  background-image: url('/src/assets/img/Background1.png');
+}
+
+/* ── BUTTON ── */
+.btn-main {
+  display: block;
+  width: 320px;
+  height: 64px;
+  margin: 0 auto;
+  background: linear-gradient(to bottom, var(--blue-light), var(--blue-dark));
+  border: none;
+  border-radius: 20px;
+  box-shadow: 0 4px 4px rgba(0, 0, 0, 0.25);
+  color: #fff;
+  font-family: var(--font);
+  font-size: 20px;
+  text-shadow: var(--text-shadow);
+  cursor: pointer;
+  transition: transform 0.1s, filter 0.1s;
+}
+
+.btn-main:active {
+  transform: scale(0.96);
+  filter: brightness(0.9);
+}
+
+.btn-main:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+/* ── WELCOME ── */
+.welcome-title {
+  font-size: 38px;
+  color: var(--amber);
+  text-shadow: var(--text-shadow);
+  text-align: center;
+  line-height: 1.3;
+  position: relative;
+  z-index: 2;
+}
+
+.welcome-btns {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  position: relative;
+  z-index: 2;
+}
+
+/* Decorative fish on welcome */
+.deco-fish {
+  position: absolute;
+  pointer-events: none;
+  z-index: 1;
+}
+
+/* ── TOP BAR ── */
+.top-bar {
+  position: absolute;
+  top: 13px;
+  right: 13px;
+  z-index: 10;
+}
+
+.btn-change-scene {
+  background: linear-gradient(to bottom, var(--blue-light), var(--blue-dark));
+  border: none;
+  border-radius: 20px;
+  padding: 10px 14px;
+  color: #fff;
+  font-family: var(--font);
+  font-size: 13px;
+  line-height: 1.4;
+  text-align: center;
+  text-shadow: var(--text-shadow);
+  box-shadow: 0 4px 4px rgba(0, 0, 0, 0.25);
+  cursor: pointer;
+  transition: transform 0.1s;
+}
+
+.btn-change-scene:active {
+  transform: scale(0.95);
+}
+
+/* ── COIN COUNTER ── */
+.coin-counter {
+  position: absolute;
+  top: 117px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  z-index: 5;
+}
+
+.coin-count {
+  font-size: 36px;
+  color: #fff;
+  text-shadow: var(--text-shadow);
+}
+
+.coin-icon {
+  width: 54px;
+  height: 54px;
+}
+
+/* ── MENU BAR ── */
+.menu-bar {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 94px;
+  display: flex;
+  z-index: 10;
+}
+
+.menu-tab {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  border: 2px solid var(--brown);
+  background: linear-gradient(to bottom, #73c6e6, #406f80);
+  cursor: pointer;
+  transition: filter 0.1s;
+  padding: 6px;
+}
+
+.menu-tab.active {
+  background: linear-gradient(to bottom, #fff, #999);
+}
+
+.menu-tab:active {
+  filter: brightness(0.85);
+}
+
+.menu-tab img {
+  width: 54px;
+  height: 54px;
+  object-fit: contain;
+}
+
+/* ── CONTENT PANEL ── */
+.content-panel {
+  position: absolute;
+  top: 220px;
+  left: 0;
+  right: 0;
+  bottom: 94px;
+  background: var(--panel-bg);
+  border: 3px solid var(--brown);
+  overflow-y: auto;
+}
+
+/* ── FISHING SCENE ── */
+.fishing-tap-area {
+  position: absolute;
+  top: 220px;
+  left: 19px;
+  width: 402px;
+  height: 360px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 5;
+}
+
+.fishing-tap-text {
+  font-size: 32px;
+  color: #fff;
+  text-shadow: var(--text-shadow);
+  text-align: center;
+  animation: pulse 1.5s infinite;
+}
+
+@keyframes pulse {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.6;
+  }
+}
+
+/* Catch animation */
+.catch-popup {
+  position: absolute;
+  top: 40%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: linear-gradient(to bottom, var(--blue-light), var(--blue-dark));
+  border: 3px solid var(--brown);
+  border-radius: 20px;
+  padding: 20px 30px;
+  font-size: 18px;
+  color: #fff;
+  text-shadow: var(--text-shadow);
+  text-align: center;
+  z-index: 20;
+  animation: catchAnim 1.5s forwards;
+}
+
+@keyframes catchAnim {
+  0% {
+    opacity: 0;
+    transform: translate(-50%, -60%) scale(0.8);
+  }
+  20% {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1.05);
+  }
+  80% {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1);
+  }
+  100% {
+    opacity: 0;
+    transform: translate(-50%, -45%) scale(0.9);
+  }
+}
+
+/* ── UPGRADE ITEM ── */
+.upgrade-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px 18px;
+  border-bottom: 2px solid rgba(136, 64, 0, 0.4);
+}
+
+.upgrade-name {
+  font-size: 13px;
+  color: #fff;
+  text-shadow: var(--text-shadow);
+  flex: 1;
+  line-height: 1.5;
+}
+
+.upgrade-cost {
+  font-size: 11px;
+  color: var(--amber);
+  text-shadow: var(--text-shadow);
+  margin-bottom: 4px;
+}
+
+.btn-buy {
+  background: linear-gradient(to bottom, var(--blue-light), var(--blue-dark));
+  border: none;
+  border-radius: 14px;
+  padding: 8px 18px;
+  color: #fff;
+  font-family: var(--font);
+  font-size: 13px;
+  text-shadow: var(--text-shadow);
+  cursor: pointer;
+  transition: transform 0.1s;
+  min-width: 90px;
+}
+
+.btn-buy:active {
+  transform: scale(0.95);
+}
+
+.btn-buy:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+/* Fixed width for mission action buttons so text changes don't resize them */
+.mission-action {
+  width: 120px;
+  box-sizing: border-box;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding-left: 12px;
+  padding-right: 12px;
+}
+
+/* ── INVENTORY ── */
+.inv-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px;
+  padding: 14px;
+}
+
+.inv-card {
+  background: rgba(0, 0, 0, 0.3);
+  border: 2px solid var(--brown);
+  border-radius: 12px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 14px 8px;
+  gap: 8px;
+}
+
+.inv-card img {
+  width: 64px;
+  height: 64px;
+  object-fit: contain;
+}
+
+.fish-name {
+  font-size: 10px;
+  color: var(--amber);
+  text-shadow: var(--text-shadow);
+  text-align: center;
+}
+
+.fish-count {
+  font-size: 11px;
+  color: #fff;
+  text-shadow: var(--text-shadow);
+}
+
+.btn-sell {
+  background: linear-gradient(to bottom, #ffaa00, #c07000);
+  border: none;
+  border-radius: 10px;
+  padding: 5px 12px;
+  color: #fff;
+  font-family: var(--font);
+  font-size: 9px;
+  cursor: pointer;
+  margin-top: 4px;
+}
+
+.btn-sell:active {
+  transform: scale(0.95);
+}
+
+/* ── MISSIONS ── */
+.mission-item {
+  padding: 16px 18px;
+  border-bottom: 2px solid rgba(136, 64, 0, 0.4);
+}
+
+.mission-title {
+  font-size: 13px;
+  color: var(--amber);
+  text-shadow: var(--text-shadow);
+  margin-bottom: 8px;
+}
+
+.mission-desc {
+  font-size: 10px;
+  color: #ddd;
+  line-height: 1.6;
+}
+
+.mission-progress {
+  margin-top: 10px;
+  height: 12px;
+  background: rgba(0, 0, 0, 0.4);
+  border-radius: 6px;
+  overflow: hidden;
+  border: 1px solid var(--brown);
+}
+
+.mission-bar {
+  height: 100%;
+  background: linear-gradient(to right, var(--blue-light), var(--blue-dark));
+  border-radius: 6px;
+  transition: width 0.4s;
+}
+
+.mission-reward {
+  font-size: 10px;
+  color: var(--amber);
+  text-shadow: var(--text-shadow);
+  margin-top: 6px;
+}
+
+/* ── FORUM ── */
+.forum-tabs {
+  display: flex;
+  border-bottom: 2px solid var(--brown);
+}
+
+.forum-tab {
+  flex: 1;
+  padding: 12px 6px;
+  text-align: center;
+  font-size: 10px;
+  color: #aaa;
+  font-family: var(--font);
+  cursor: pointer;
+  border: none;
+  background: transparent;
+}
+
+.forum-tab.active {
+  color: var(--amber);
+  border-bottom: 3px solid var(--amber);
+}
+
+.chat-msgs {
+  padding: 12px;
+  overflow-y: auto;
+  height: calc(100% - 100px);
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.chat-msg {
+  background: rgba(0, 0, 0, 0.35);
+  border-radius: 10px;
+  padding: 10px 12px;
+  font-size: 10px;
+  color: #eee;
+  line-height: 1.6;
+}
+
+.chat-msg .msg-user {
+  color: var(--blue-light);
+  margin-bottom: 4px;
+}
+
+.chat-input-row {
+  display: flex;
+  gap: 8px;
+  padding: 8px 12px;
+  border-top: 2px solid var(--brown);
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+}
+
+.chat-input {
+  flex: 1;
+  background: rgba(0, 0, 0, 0.4);
+  border: 1px solid var(--brown);
+  border-radius: 8px;
+  padding: 8px 10px;
+  color: #fff;
+  font-family: var(--font);
+  font-size: 10px;
+}
+
+.chat-input:focus {
+  outline: none;
+  border-color: var(--blue-light);
+}
+
+.btn-send {
+  background: linear-gradient(to bottom, var(--blue-light), var(--blue-dark));
+  border: none;
+  border-radius: 8px;
+  padding: 8px 14px;
+  color: #fff;
+  font-family: var(--font);
+  font-size: 10px;
+  cursor: pointer;
+}
+
+/* ── OPTIONS ── */
+.option-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 18px 18px;
+  border-bottom: 2px solid rgba(136, 64, 0, 0.4);
+}
+
+.option-label {
+  font-size: 13px;
+  color: #fff;
+  text-shadow: var(--text-shadow);
+}
+
+.toggle-switch {
+  width: 54px;
+  height: 28px;
+  background: var(--blue-dark);
+  border-radius: 14px;
+  position: relative;
+  cursor: pointer;
+  transition: background 0.2s;
+  border: 2px solid var(--brown);
+}
+
+.toggle-switch.on {
+  background: var(--blue-light);
+}
+
+.toggle-knob {
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  width: 20px;
+  height: 20px;
+  background: #fff;
+  border-radius: 10px;
+  transition: transform 0.2s;
+}
+
+.toggle-switch.on .toggle-knob {
+  transform: translateX(26px);
+}
+
+.volume-slider {
+  width: 140px;
+  accent-color: var(--blue-light);
+}
+
+/* ── LOGIN / SIGNUP ── */
+.form-screen {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 80px 40px 40px;
+  gap: 0;
+}
+
+.form-title {
+  font-size: 24px;
+  color: var(--amber);
+  text-shadow: var(--text-shadow);
+  margin-bottom: 40px;
+  text-align: center;
+  position: relative;
+  z-index: 2;
+}
+
+.form-group {
+  width: 100%;
+  margin-bottom: 20px;
+}
+
+.form-label {
+  font-size: 11px;
+  color: var(--amber);
+  text-shadow: var(--text-shadow);
+  display: block;
+  margin-bottom: 8px;
+}
+
+.form-input {
+  width: 100%;
+  background: rgba(0, 0, 0, 0.4);
+  border: 2px solid var(--brown);
+  border-radius: 12px;
+  padding: 14px 16px;
+  color: #fff;
+  font-family: var(--font);
+  font-size: 13px;
+  outline: none;
+}
+
+.form-input:focus {
+  border-color: var(--blue-light);
+}
+
+.form-submit {
+  margin-top: 20px;
+}
+
+.form-link {
+  margin-top: 16px;
+  font-size: 10px;
+  color: var(--blue-light);
+  cursor: pointer;
+  text-decoration: underline;
+  font-family: var(--font);
+  background: none;
+  border: none;
+  padding: 0;
+}
+
+.form-link:hover {
+  color: #fff;
+}
+
+/* ── SCROLL ── */
+.content-panel::-webkit-scrollbar {
+  width: 4px;
+}
+
+.content-panel::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.content-panel::-webkit-scrollbar-thumb {
+  background: var(--brown);
+  border-radius: 2px;
+}
+
+/* ── RESPONSIVE ── */
+@media (max-width: 460px) {
+  .screen {
+    width: 100vw;
+    height: 100vh;
+    max-height: none;
+  }
+}
