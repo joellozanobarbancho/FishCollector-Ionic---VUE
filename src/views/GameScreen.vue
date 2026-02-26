@@ -1,4 +1,5 @@
 <template>
+  <ion-page>
   <div class="screen" @click="handleScreenClick">
     <div class="scene-bg" :class="[scene === 2 ? 'ocean-bg' : 'game-bg']"></div>
 
@@ -280,10 +281,12 @@
       </div>
     </nav>
   </div>
+  </ion-page>
 </template>
 
 <script setup lang="ts">
 import { ref } from 'vue';
+import { IonPage } from '@ionic/vue';
 
 interface Fish {
   id: number;
