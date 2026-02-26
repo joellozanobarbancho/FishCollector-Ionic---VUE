@@ -1,5 +1,5 @@
 <template>
-  <div class="screen">
+  <div class="screen" @click="handleScreenClick">
     <div class="scene-bg" :class="[scene === 2 ? 'ocean-bg' : 'game-bg']"></div>
 
     <!-- Coin counter -->
@@ -21,6 +21,7 @@
     <div
       class="content-panel"
       v-if="activeTab === 'upgrades'"
+      @click.stop
       @pointerdown="startPanelDrag"
       @pointermove="onPanelDrag"
       @pointerup="endPanelDrag"
@@ -45,13 +46,14 @@
     <div
       class="content-panel"
       v-if="activeTab === 'inventory'"
+      @click.stop
       @pointerdown="startPanelDrag"
       @pointermove="onPanelDrag"
       @pointerup="endPanelDrag"
       @pointerleave="endPanelDrag"
     >
       <div class="menu-panel-title">
-        YOUR CATCH
+        INVENTORY
       </div>
       <div class="inv-grid">
         <div class="inv-card" v-for="fish in inventory" :key="fish.id">
@@ -74,6 +76,7 @@
     <div
       class="content-panel"
       v-if="activeTab === 'missions'"
+      @click.stop
       @pointerdown="startPanelDrag"
       @pointermove="onPanelDrag"
       @pointerup="endPanelDrag"
@@ -123,10 +126,9 @@
     </div>
 
     <!-- ── FORUM PANEL ── -->
-    <div class="content-panel" v-if="activeTab === 'forum'">
+    <div class="content-panel" v-if="activeTab === 'forum'" @click.stop>
       <div
         class="forum-scroll"
-        @scroll="handleForumScroll"
         @pointerdown="startForumDrag"
         @pointermove="onForumDrag"
         @pointerup="endForumDrag"
@@ -197,6 +199,7 @@
     <div
       class="content-panel"
       v-if="activeTab === 'options'"
+      @click.stop
       @pointerdown="startPanelDrag"
       @pointermove="onPanelDrag"
       @pointerup="endPanelDrag"
@@ -259,7 +262,7 @@
     </div>
 
     <!-- ── MENU BAR ── -->
-    <nav class="menu-bar">
+    <nav class="menu-bar" @click.stop>
       <div class="menu-tab" :class="{ active: activeTab === 'upgrades' }" @click="toggleTab('upgrades')">
         <img src="@/assets/img/Upgrades.png" alt="Upgrades" />
       </div>
@@ -280,7 +283,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed } from 'vue';
+import { ref } from 'vue';
 
 interface Fish {
   id: number;
@@ -375,7 +378,6 @@ const FISH_TYPES: Fish[] = [
 
 // State
 const activeTab = ref<string>('fishing');
-const forumTab = ref<string>('chat');
 const scene = ref<number>(1);
 const coins = ref(150);
 const catchPopup = ref<Fish | null>(null);
@@ -433,6 +435,12 @@ function toggleTab(tabName: string) {
   } else {
     // Otherwise open the clicked tab
     activeTab.value = tabName;
+  }
+}
+
+function handleScreenClick() {
+  if (activeTab.value !== 'fishing') {
+    activeTab.value = 'fishing';
   }
 }
 
@@ -525,12 +533,6 @@ function sendChat() {
   });
 
   chatInput.value = '';
-}
-
-function handleForumScroll(event: Event) {
-  const el = event.target as HTMLElement;
-  const isTrade = el.scrollLeft >= el.clientWidth * 0.5;
-  forumTab.value = isTrade ? 'trade' : 'chat';
 }
 
 const isForumDragging = ref(false);

@@ -27,12 +27,6 @@
   </div>
 </template>
 
-<script setup lang="ts">
-import { useRouter } from 'vue-router';
-
-const router = useRouter();
-</script>
-
 <style scoped>
 /* Styles are in global.css */
 </style>

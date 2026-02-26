@@ -5,7 +5,6 @@
     <div class="catch-popup" v-if="showSuccess">
       Account created successfully!
     </div>
-    <p class="form-title welcome-title-sm" style="position: relative; z-index: 2">SIGN IN</p>
     <div class="form-group" style="position: relative; z-index: 2">
       <label class="form-label">Username:</label>
       <input class="form-input" type="text" v-model="username" placeholder="Choose a username" />

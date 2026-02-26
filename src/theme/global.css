@@ -30,7 +30,6 @@ body {
   font-family: var(--font);
 }
 
-/* ── SCREEN CONTAINER ── */
 .screen {
   position: relative;
   width: 100%;
@@ -44,7 +43,6 @@ body {
   flex-direction: column;
 }
 
-/* ── BACKGROUND ── */
 .scene-bg {
   position: absolute;
   inset: 0;
@@ -57,12 +55,10 @@ body {
   background-image: url('/src/assets/img/WelcomeBackground.png');
 }
 
-/* Game screen background (local asset) */
 .game-bg {
   background-image: url('/src/assets/img/Background1.png');
 }
 
-/* ── BUTTON ── */
 .btn-main {
   display: block;
   width: 320px;
@@ -90,33 +86,10 @@ body {
   cursor: not-allowed;
 }
 
-/* ── WELCOME ── */
 .welcome-title {
   font-size: 38px;
   color: var(--amber);
   font-weight: 800;
-  text-shadow:
-    2px 0 0 var(--brown),
-    -2px 0 0 var(--brown),
-    0 2px 0 var(--brown),
-    0 -2px 0 var(--brown),
-    1px 1px 0 var(--brown),
-    -1px 1px 0 var(--brown),
-    1px -1px 0 var(--brown),
-    -1px -1px 0 var(--brown),
-    3px 3px 0 rgba(0, 0, 0, 0.4),
-    6px 6px 0 rgba(0, 0, 0, 0.25),
-    var(--text-shadow);
-  text-align: center;
-  line-height: 1.3;
-  position: relative;
-  z-index: 2;
-}
-
-.welcome-title-sm {
-  font-size: 28px;
-  font-weight: 800;
-  color: var(--amber);
   text-shadow:
     2px 0 0 var(--brown),
     -2px 0 0 var(--brown),
@@ -143,14 +116,6 @@ body {
   z-index: 2;
 }
 
-/* Decorative fish on welcome */
-.deco-fish {
-  position: absolute;
-  pointer-events: none;
-  z-index: 1;
-}
-
-/* ── COIN// COUNTER ── */
 .coin-counter {
   position: absolute;
   top: 117px;
@@ -173,16 +138,6 @@ body {
   height: 36px;
 }
 
-/* inline coin icon for use within text */
-.inline-coin {
-  width: 7px;
-  height: 7px;
-  display: inline-block;
-  vertical-align: text-bottom;
-  margin: 0 3px;
-}
-
-/* coin icon for inline use with text (10px to match small text) */
 .coin-sm {
   width: 14px;
   height: 14px;
@@ -195,7 +150,6 @@ body {
   margin-left: 2px;
 }
 
-/* ── MENU BAR ── */
 .menu-bar {
   position: absolute;
   bottom: 0;
@@ -233,7 +187,6 @@ body {
   object-fit: contain;
 }
 
-/* ── CONTENT PANEL ── */
 .content-panel {
   position: absolute;
   top: 220px;
@@ -251,7 +204,6 @@ body {
   cursor: grabbing;
 }
 
-/* ── FISHING SCENE ── */
 .fishing-tap-area {
   position: absolute;
   top: 220px;
@@ -283,7 +235,6 @@ body {
   }
 }
 
-/* Catch animation */
 .catch-popup {
   position: absolute;
   top: 40%;
@@ -335,12 +286,6 @@ body {
     opacity: 0;
   }
 }
-.popup-overlay {
-  position: absolute;
-  inset: 0;
-  background: rgba(0, 0, 0, 0.45);
-  z-index: 15;
-}
 
 @keyframes catchAnim {
   0% {
@@ -361,7 +306,6 @@ body {
   }
 }
 
-/* ── UPGRADE ITEM ── */
 .upgrade-item {
   display: flex;
   align-items: center;
@@ -416,7 +360,6 @@ body {
   cursor: not-allowed;
 }
 
-/* Fixed width for mission action buttons so text changes don't resize them */
 .mission-action {
   width: 120px;
   box-sizing: border-box;
@@ -428,7 +371,6 @@ body {
   align-self: center;
 }
 
-/* ── INVENTORY ── */
 .inv-grid {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
@@ -482,7 +424,6 @@ body {
   transform: scale(0.95);
 }
 
-/* ── MISSIONS ── */
 .mission-item {
   padding: 26px 28px;
   border-bottom: 2px solid rgba(136, 64, 0, 0.4);
@@ -527,7 +468,6 @@ body {
   margin-top: 6px;
 }
 
-/* ── FORUM ── */
 .forum-scroll {
   display: flex;
   overflow-x: auto;
@@ -555,16 +495,26 @@ body {
   padding: 18px;
   font-size: 20px;
   color: var(--amber);
+  font-weight: 800;
   text-shadow: var(--text-shadow);
+  background: linear-gradient(to bottom, var(--blue-light), var(--blue-dark));
   border-bottom: 2px solid var(--brown);
+  position: sticky;
+  top: 0;
+  z-index: 2;
 }
 
 .menu-panel-title {
   padding: 18px;
   font-size: 20px;
   color: var(--amber);
+  font-weight: 800;
   text-shadow: var(--text-shadow);
+  background: linear-gradient(to bottom, var(--blue-light), var(--blue-dark));
   border-bottom: 2px solid var(--brown);
+  position: sticky;
+  top: 0;
+  z-index: 2;
 }
 
 .chat-msgs {
@@ -654,7 +604,6 @@ body {
   cursor: pointer;
 }
 
-/* ── OPTIONS ── */
 .option-row {
   display: flex;
   align-items: center;
@@ -715,16 +664,6 @@ body {
   gap: 0;
 }
 
-.form-title {
-  font-size: 24px;
-  color: var(--amber);
-  text-shadow: var(--text-shadow);
-  margin-bottom: 40px;
-  text-align: center;
-  position: relative;
-  z-index: 2;
-}
-
 .form-group {
   width: 100%;
   margin-bottom: 20px;
@@ -774,7 +713,6 @@ body {
   color: #fff;
 }
 
-/* ── SCROLL ── */
 .content-panel::-webkit-scrollbar {
   width: 4px;
 }
@@ -788,7 +726,6 @@ body {
   border-radius: 2px;
 }
 
-/* ── RESPONSIVE ── */
 @media (max-width: 460px) {
   .screen {
     width: 100vw;

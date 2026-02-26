@@ -1,7 +1,6 @@
 <template>
   <div class="screen form-screen">
     <div class="scene-bg welcome-bg"></div>
-    <p class="form-title welcome-title-sm" style="position: relative; z-index: 2">LOG IN</p>
     <div class="form-group" style="position: relative; z-index: 2">
       <label class="form-label">Username:</label>
       <input class="form-input" type="text" v-model="username" placeholder="Enter username" />
