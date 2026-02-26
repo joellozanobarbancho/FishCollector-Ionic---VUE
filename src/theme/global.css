@@ -94,7 +94,41 @@ body {
 .welcome-title {
   font-size: 38px;
   color: var(--amber);
-  text-shadow: var(--text-shadow);
+  font-weight: 800;
+  text-shadow:
+    2px 0 0 var(--brown),
+    -2px 0 0 var(--brown),
+    0 2px 0 var(--brown),
+    0 -2px 0 var(--brown),
+    1px 1px 0 var(--brown),
+    -1px 1px 0 var(--brown),
+    1px -1px 0 var(--brown),
+    -1px -1px 0 var(--brown),
+    3px 3px 0 rgba(0, 0, 0, 0.4),
+    6px 6px 0 rgba(0, 0, 0, 0.25),
+    var(--text-shadow);
+  text-align: center;
+  line-height: 1.3;
+  position: relative;
+  z-index: 2;
+}
+
+.welcome-title-sm {
+  font-size: 28px;
+  font-weight: 800;
+  color: var(--amber);
+  text-shadow:
+    2px 0 0 var(--brown),
+    -2px 0 0 var(--brown),
+    0 2px 0 var(--brown),
+    0 -2px 0 var(--brown),
+    1px 1px 0 var(--brown),
+    -1px 1px 0 var(--brown),
+    1px -1px 0 var(--brown),
+    -1px -1px 0 var(--brown),
+    3px 3px 0 rgba(0, 0, 0, 0.4),
+    6px 6px 0 rgba(0, 0, 0, 0.25),
+    var(--text-shadow);
   text-align: center;
   line-height: 1.3;
   position: relative;
@@ -264,7 +298,48 @@ body {
   text-shadow: var(--text-shadow);
   text-align: center;
   z-index: 20;
-  animation: catchAnim 1.5s forwards;
+  animation: catchAnim 1.5s forwards, popupFadeIn 0.25s ease-out;
+}
+
+.popup-overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.45);
+  z-index: 15;
+  animation: overlayFadeIn 0.25s ease-out, overlayFadeOut 0.4s ease-in 1.1s forwards;
+}
+
+@keyframes popupFadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes overlayFadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes overlayFadeOut {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}
+.popup-overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.45);
+  z-index: 15;
 }
 
 @keyframes catchAnim {
@@ -636,7 +711,7 @@ body {
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 80px 40px 40px;
+  padding: 140px 40px 40px;
   gap: 0;
 }
 
@@ -656,7 +731,7 @@ body {
 }
 
 .form-label {
-  font-size: 11px;
+  font-size: 16px;
   color: var(--amber);
   text-shadow: var(--text-shadow);
   display: block;
@@ -685,7 +760,7 @@ body {
 
 .form-link {
   margin-top: 16px;
-  font-size: 10px;
+  font-size: 14px;
   color: var(--blue-light);
   cursor: pointer;
   text-decoration: underline;

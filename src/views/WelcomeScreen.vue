@@ -15,8 +15,8 @@
         gap: 0;
       "
     >
-      <p class="welcome-title">
-        FISH<br />COLLECTOR:<br />IDLE
+      <p class="welcome-title" style="margin-bottom: 40px;">
+        FISH COLLECTOR:<br />IDLE
       </p>
       <div class="welcome-btns">
         <button class="btn-main" @click="$router.push('/login')">Log In</button>

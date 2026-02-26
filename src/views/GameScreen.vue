@@ -252,6 +252,7 @@
     </div>
 
     <!-- catch popup -->
+    <div class="popup-overlay" v-if="catchPopup"></div>
     <div class="catch-popup" v-if="catchPopup">
       Caught a {{ catchPopup.name }}!<br />
       <img :src="catchPopup.img" :alt="catchPopup.name" style="width: 64px; height: 64px; object-fit: contain; margin-top: 6px;" />

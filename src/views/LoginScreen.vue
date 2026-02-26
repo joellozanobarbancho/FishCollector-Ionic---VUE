@@ -1,13 +1,13 @@
 <template>
   <div class="screen form-screen">
     <div class="scene-bg welcome-bg"></div>
-    <p class="form-title" style="position: relative; z-index: 2">LOG IN</p>
+    <p class="form-title welcome-title-sm" style="position: relative; z-index: 2">LOG IN</p>
     <div class="form-group" style="position: relative; z-index: 2">
-      <label class="form-label">USERNAME</label>
+      <label class="form-label">Username:</label>
       <input class="form-input" type="text" v-model="username" placeholder="Enter username" />
     </div>
     <div class="form-group" style="position: relative; z-index: 2">
-      <label class="form-label">PASSWORD</label>
+      <label class="form-label">Password:</label>
       <input class="form-input" type="password" v-model="password" placeholder="Enter password" />
     </div>
     <button class="btn-main form-submit" style="position: relative; z-index: 2" @click="handleLogin">
