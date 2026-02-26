@@ -19,14 +19,14 @@
 
     <!-- ── UPGRADES PANEL ── -->
     <div class="content-panel" v-if="activeTab === 'upgrades'">
-      <div style="padding: 14px; font-size: 16px; color: var(--amber); text-shadow: var(--text-shadow)">
+      <div style="padding: 18px; font-size: 20px; color: var(--amber); text-shadow: var(--text-shadow)">
         UPGRADES
       </div>
       <div class="upgrade-item" v-for="upg in upgrades" :key="upg.id">
         <div>
           <div class="upgrade-name">{{ upg.name }}</div>
           <div class="upgrade-cost"><img src="@/assets/img/Coin.png" class="coin-sm" alt="coin" /> {{ upg.cost }} coins</div>
-          <div style="font-size: 9px; color: #aaa; font-family: var(--font)">{{ upg.desc }}</div>
+          <div style="font-size: 14px; color: #aaa; font-family: var(--font)">{{ upg.desc }}</div>
         </div>
         <button class="btn-buy" :disabled="coins < upg.cost || upg.bought" @click="buyUpgrade(upg)">
           {{ upg.bought ? 'Owned' : 'Buy' }}
@@ -36,7 +36,7 @@
 
     <!-- ── INVENTORY PANEL ── -->
     <div class="content-panel" v-if="activeTab === 'inventory'">
-      <div style="padding: 14px; font-size: 16px; color: var(--amber); text-shadow: var(--text-shadow)">
+      <div style="padding: 18px; font-size: 20px; color: var(--amber); text-shadow: var(--text-shadow)">
         YOUR CATCH
       </div>
       <div class="inv-grid">
@@ -49,7 +49,7 @@
         <div
           class="inv-card"
           v-if="inventory.length === 0"
-          style="grid-column: 1/-1; color: #aaa; font-size: 11px; padding: 30px"
+          style="grid-column: 1/-1; color: #aaa; font-size: 16px; padding: 34px"
         >
           No fish yet! Go fishing first.
         </div>
@@ -58,7 +58,7 @@
 
     <!-- ── MISSIONS PANEL ── -->
     <div class="content-panel" v-if="activeTab === 'missions'">
-      <div style="padding: 14px; font-size: 16px; color: var(--amber); text-shadow: var(--text-shadow)">
+      <div style="padding: 18px; font-size: 20px; color: var(--amber); text-shadow: var(--text-shadow)">
         MISSIONS
       </div>
       <div class="mission-item" v-for="m in missions.filter(m => !m.completed)" :key="m.id">
@@ -136,7 +136,7 @@
 
     <!-- ── OPTIONS PANEL ── -->
     <div class="content-panel" v-if="activeTab === 'options'">
-      <div style="padding: 14px; font-size: 16px; color: var(--amber); text-shadow: var(--text-shadow)">
+      <div style="padding: 18px; font-size: 20px; color: var(--amber); text-shadow: var(--text-shadow)">
         OPTIONS
       </div>
       <div class="option-row">
@@ -171,7 +171,7 @@
             border-radius: 8px;
             padding: 6px;
             font-family: var(--font);
-            font-size: 10px;
+            font-size: 14px;
           "
         >
           <option>English</option>
@@ -180,15 +180,15 @@
         </select>
       </div>
       <div class="option-row">
-        <span class="option-label" style="font-size: 11px">Account</span>
+        <span class="option-label" style="font-size: 18px">Account</span>
         <button class="btn-buy" @click="$router.push('/')">Log Out</button>
       </div>
     </div>
 
     <!-- catch popup -->
     <div class="catch-popup" v-if="catchPopup">
-      Caught a {{ catchPopup }}!<br />
-      <span style="font-size: 13px; color: var(--amber)">+{{ catchValue }} 🪙</span>
+      Caught a {{ catchPopup.name }}!<br />
+      <img :src="catchPopup.img" :alt="catchPopup.name" style="width: 64px; height: 64px; object-fit: contain; margin-top: 6px;" />
     </div>
 
     <!-- ── MENU BAR ── -->
@@ -309,9 +309,9 @@ const FISH_TYPES: Fish[] = [
 // State
 const activeTab = ref<string>('fishing');
 const forumTab = ref<string>('chat');
+const scene = ref<number>(1);
 const coins = ref(150);
-const catchPopup = ref<string | null>(null);
-const catchValue = ref(0);
+const catchPopup = ref<Fish | null>(null);
 const chatInput = ref('');
 
 // Upgrades
@@ -372,7 +372,7 @@ function tapFish() {
   const roll = Math.random();
   let fish: Fish;
 
-  if (roll < 0.35) fish = FISH_TYPES[0]; // catfish common
+  if (roll < 0.35) fish = FISH_TYPES[0]; // catfish
   else if (roll < 0.55) fish = FISH_TYPES[1]; // goldfish
   else if (roll < 0.7) fish = FISH_TYPES[2]; // rainbow trout
   else if (roll < 0.8) fish = FISH_TYPES[6]; // anchovy
@@ -402,8 +402,7 @@ function tapFish() {
   const rareHunter = missions.value.find(m => m.id === 4);
   if (rareHunter?.accepted && fish.id === 8) rareHunter.progress = Math.min(rareHunter.goal, rareHunter.progress + 1);
 
-  catchPopup.value = fish.name;
-  catchValue.value = fish.value;
+  catchPopup.value = fish;
   catchTimer = setTimeout(() => {
     catchPopup.value = null;
     catchTimer = null;

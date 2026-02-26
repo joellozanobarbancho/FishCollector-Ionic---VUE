@@ -294,12 +294,12 @@ body {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 16px 18px;
+  padding: 26px 28px;
   border-bottom: 2px solid rgba(136, 64, 0, 0.4);
 }
 
 .upgrade-name {
-  font-size: 13px;
+  font-size: 19px;
   color: #fff;
   text-shadow: var(--text-shadow);
   flex: 1;
@@ -307,7 +307,7 @@ body {
 }
 
 .upgrade-cost {
-  font-size: 11px;
+  font-size: 16px;
   color: var(--amber);
   text-shadow: var(--text-shadow);
   margin-bottom: 4px;
@@ -316,15 +316,15 @@ body {
 .btn-buy {
   background: linear-gradient(to bottom, var(--blue-light), var(--blue-dark));
   border: none;
-  border-radius: 14px;
-  padding: 8px 18px;
+  border-radius: 20px;
+  padding: 13px 26px;
   color: #fff;
   font-family: var(--font);
-  font-size: 13px;
+  font-size: 18px;
   text-shadow: var(--text-shadow);
   cursor: pointer;
   transition: transform 0.1s;
-  min-width: 90px;
+  min-width: 135px;
 }
 
 .btn-buy:active {
@@ -362,8 +362,8 @@ body {
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 14px 8px;
-  gap: 8px;
+  padding: 24px 14px;
+  gap: 14px;
 }
 
 .inv-card img {
@@ -373,14 +373,14 @@ body {
 }
 
 .fish-name {
-  font-size: 10px;
+  font-size: 15px;
   color: var(--amber);
   text-shadow: var(--text-shadow);
   text-align: center;
 }
 
 .fish-count {
-  font-size: 11px;
+  font-size: 16px;
   color: #fff;
   text-shadow: var(--text-shadow);
 }
@@ -389,10 +389,10 @@ body {
   background: linear-gradient(to bottom, #ffaa00, #c07000);
   border: none;
   border-radius: 10px;
-  padding: 5px 12px;
+  padding: 10px 22px;
   color: #fff;
   font-family: var(--font);
-  font-size: 9px;
+  font-size: 14px;
   cursor: pointer;
   margin-top: 4px;
 }
@@ -403,19 +403,19 @@ body {
 
 /* ── MISSIONS ── */
 .mission-item {
-  padding: 16px 18px;
+  padding: 26px 28px;
   border-bottom: 2px solid rgba(136, 64, 0, 0.4);
 }
 
 .mission-title {
-  font-size: 13px;
+  font-size: 19px;
   color: var(--amber);
   text-shadow: var(--text-shadow);
   margin-bottom: 8px;
 }
 
 .mission-desc {
-  font-size: 10px;
+  font-size: 15px;
   color: #ddd;
   line-height: 1.6;
 }
@@ -437,7 +437,7 @@ body {
 }
 
 .mission-reward {
-  font-size: 10px;
+  font-size: 15px;
   color: var(--amber);
   text-shadow: var(--text-shadow);
   margin-top: 6px;
@@ -451,9 +451,9 @@ body {
 
 .forum-tab {
   flex: 1;
-  padding: 12px 6px;
+  padding: 18px 12px;
   text-align: center;
-  font-size: 10px;
+  font-size: 15px;
   color: #aaa;
   font-family: var(--font);
   cursor: pointer;
@@ -478,8 +478,8 @@ body {
 .chat-msg {
   background: rgba(0, 0, 0, 0.35);
   border-radius: 10px;
-  padding: 10px 12px;
-  font-size: 10px;
+  padding: 16px 18px;
+  font-size: 15px;
   color: #eee;
   line-height: 1.6;
 }
@@ -492,7 +492,7 @@ body {
 .chat-input-row {
   display: flex;
   gap: 8px;
-  padding: 8px 12px;
+  padding: 14px 18px;
   border-top: 2px solid var(--brown);
   position: absolute;
   bottom: 0;
@@ -505,10 +505,10 @@ body {
   background: rgba(0, 0, 0, 0.4);
   border: 1px solid var(--brown);
   border-radius: 8px;
-  padding: 8px 10px;
+  padding: 14px 16px;
   color: #fff;
   font-family: var(--font);
-  font-size: 10px;
+  font-size: 15px;
 }
 
 .chat-input:focus {
@@ -520,10 +520,10 @@ body {
   background: linear-gradient(to bottom, var(--blue-light), var(--blue-dark));
   border: none;
   border-radius: 8px;
-  padding: 8px 14px;
+  padding: 14px 20px;
   color: #fff;
   font-family: var(--font);
-  font-size: 10px;
+  font-size: 15px;
   cursor: pointer;
 }
 
@@ -532,12 +532,12 @@ body {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 18px 18px;
+  padding: 28px 28px;
   border-bottom: 2px solid rgba(136, 64, 0, 0.4);
 }
 
 .option-label {
-  font-size: 13px;
+  font-size: 18px;
   color: #fff;
   text-shadow: var(--text-shadow);
 }
