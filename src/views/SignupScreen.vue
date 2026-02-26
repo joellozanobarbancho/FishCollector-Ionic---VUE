@@ -1,41 +1,49 @@
 <template>
   <ion-page>
-    <div class="screen form-screen">
-      <div class="scene-bg welcome-bg"></div>
-      <div class="popup-overlay" v-if="showSuccess"></div>
-      <div class="catch-popup" v-if="showSuccess">
-        Account created successfully!
+    <ion-content fullscreen class="screen-content ion-no-padding">
+      <div class="screen form-screen">
+        <div class="scene-bg welcome-bg"></div>
+        <div class="popup-overlay" v-if="showSuccess"></div>
+        <div class="catch-popup" v-if="showSuccess">
+          Account created successfully!
+        </div>
+        <ion-grid class="form-layout">
+          <ion-row class="ion-justify-content-center">
+            <ion-col size="12" size-sm="10" size-md="8" size-lg="6">
+              <div class="form-group">
+                <label class="form-label">Username:</label>
+                <ion-input class="form-input" type="text" v-model="username" placeholder="Choose a username" />
+              </div>
+              <div class="form-group">
+                <label class="form-label">Email:</label>
+                <ion-input class="form-input" type="email" v-model="email" placeholder="Enter email" />
+              </div>
+              <div class="form-group">
+                <label class="form-label">Password:</label>
+                <ion-input class="form-input" type="password" v-model="password" placeholder="Choose password" />
+              </div>
+              <div class="form-group">
+                <label class="form-label">Confirm password:</label>
+                <ion-input class="form-input" type="password" v-model="confirmPassword" placeholder="Confirm password" />
+              </div>
+              <ion-button class="btn-main form-submit" @click="handleSignup">
+                Create Account
+              </ion-button>
+              <ion-button fill="clear" class="form-link" @click="$router.push('/')">
+                ← Back
+              </ion-button>
+            </ion-col>
+          </ion-row>
+        </ion-grid>
       </div>
-      <div class="form-group" style="position: relative; z-index: 2">
-        <label class="form-label">Username:</label>
-        <input class="form-input" type="text" v-model="username" placeholder="Choose a username" />
-      </div>
-      <div class="form-group" style="position: relative; z-index: 2">
-        <label class="form-label">Email:</label>
-        <input class="form-input" type="email" v-model="email" placeholder="Enter email" />
-      </div>
-      <div class="form-group" style="position: relative; z-index: 2">
-        <label class="form-label">Password:</label>
-        <input class="form-input" type="password" v-model="password" placeholder="Choose password" />
-      </div>
-      <div class="form-group" style="position: relative; z-index: 2">
-        <label class="form-label">Confirm password:</label>
-        <input class="form-input" type="password" v-model="confirmPassword" placeholder="Confirm password" />
-      </div>
-      <button class="btn-main form-submit" style="position: relative; z-index: 2" @click="handleSignup">
-        Create Account
-      </button>
-      <button class="form-link" style="position: relative; z-index: 2" @click="$router.push('/')">
-        ← Back
-      </button>
-    </div>
+    </ion-content>
   </ion-page>
 </template>
 
 <script setup lang="ts">
 import { ref } from 'vue';
 import { useRouter } from 'vue-router';
-import { IonPage } from '@ionic/vue';
+import { IonPage, IonContent, IonGrid, IonRow, IonCol, IonInput, IonButton } from '@ionic/vue';
 
 const router = useRouter();
 const username = ref('');

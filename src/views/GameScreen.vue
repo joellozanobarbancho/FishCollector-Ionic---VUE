@@ -1,7 +1,8 @@
 <template>
   <ion-page>
-  <div class="screen" @click="handleScreenClick">
-    <div class="scene-bg" :class="[scene === 2 ? 'ocean-bg' : 'game-bg']"></div>
+    <ion-content fullscreen class="screen-content game-content ion-no-padding">
+      <div class="screen" @click="handleScreenClick">
+        <div class="scene-bg" :class="[scene === 2 ? 'ocean-bg' : 'game-bg']"></div>
 
     <!-- Coin counter -->
     <div class="coin-counter">
@@ -37,9 +38,9 @@
           <div class="upgrade-cost">{{ upg.cost }}<img src="@/assets/img/Coin.png" class="coin-sm coin-tight" alt="coin" /></div>
           <div class="upgrade-desc">{{ upg.desc }}</div>
         </div>
-        <button class="btn-buy" :disabled="coins < upg.cost || upg.bought" @click="buyUpgrade(upg)">
+        <ion-button class="btn-buy" :disabled="coins < upg.cost || upg.bought" @click="buyUpgrade(upg)">
           {{ upg.bought ? 'Owned' : 'Buy' }}
-        </button>
+        </ion-button>
       </div>
     </div>
 
@@ -61,12 +62,13 @@
           <img :src="fish.img" :alt="fish.name" />
           <div class="fish-name">{{ fish.name }}</div>
           <div class="fish-count">x{{ fish.count }}</div>
-          <button class="btn-sell" @click="sellFish(fish)">SELL +{{ fish.value }}🪙</button>
+          <ion-button class="btn-sell" @click="sellFish(fish)">
+            <span class="btn-sell-label">SELL<br />+{{ fish.value }}🪙</span>
+          </ion-button>
         </div>
         <div
-          class="inv-card"
+          class="inv-card inv-empty"
           v-if="inventory.length === 0"
-          style="grid-column: 1/-1; color: #aaa; font-size: 16px; padding: 34px"
         >
           No fish yet! Go fishing first.
         </div>
@@ -87,41 +89,41 @@
         MISSIONS
       </div>
       <div class="mission-item" v-for="m in missions.filter(m => !m.completed)" :key="m.id">
-        <div style="display: flex; justify-content: space-between; align-items: flex-start; gap: 10px">
-          <div style="flex: 1">
+        <div class="mission-head">
+          <div class="mission-main">
             <div class="mission-title">{{ m.title }}</div>
             <div class="mission-desc">{{ m.desc }}</div>
             <div class="mission-progress">
-              <div class="mission-bar" :style="{ width: Math.min(100, (m.progress / m.goal) * 100) + '%' }"></div>
+              <ion-progress-bar
+                class="mission-progressbar"
+                :value="Math.min(1, m.progress / m.goal)"
+              ></ion-progress-bar>
             </div>
             <div class="mission-reward">
               Reward: {{ m.reward }}<img src="@/assets/img/Coin.png" class="coin-sm coin-tight" alt="coin" /> | {{ m.progress }}/{{ m.goal }}
             </div>
           </div>
-          <button
+          <ion-button
             v-if="!m.accepted"
             class="btn-buy mission-action"
             @click="acceptMission(m)"
-            style="margin-top: 0;"
           >
             Accept
-          </button>
-          <button
+          </ion-button>
+          <ion-button
             v-else-if="m.progress >= m.goal"
-            class="btn-buy mission-action"
+            class="btn-buy mission-action mission-done"
             @click="claimReward(m)"
-            style="margin-top: 0; background: linear-gradient(to bottom, #4ade80, #22c55e);"
           >
             Done
-          </button>
-          <button
+          </ion-button>
+          <ion-button
             v-else
             class="btn-buy mission-action"
             disabled
-            style="margin-top: 0; opacity: 0.6; cursor: not-allowed;"
           >
             Accepted
-          </button>
+          </ion-button>
         </div>
       </div>
     </div>
@@ -139,58 +141,58 @@
           <div class="forum-pane-title">PLAYER CHAT</div>
           <div class="chat-msgs">
             <div class="chat-msg" v-for="msg in chatMessages" :key="msg.id">
-              <div class="msg-user" :style="{ color: getUserColor(msg.user) }">{{ msg.user }}</div>
+              <div class="msg-user" :class="getUserColorClass(msg.user)">{{ msg.user }}</div>
               {{ msg.text }}
             </div>
           </div>
           <div class="chat-input-row">
-            <input
+            <ion-input
               class="chat-input"
               v-model="chatInput"
               placeholder="Type a message..."
-              @keyup.enter="sendChat"
+              @keydown.enter="sendChat"
             />
-            <button class="btn-send" @click="sendChat">Send</button>
+            <ion-button class="btn-send" @click="sendChat">Send</ion-button>
           </div>
         </section>
         <section class="forum-pane">
           <div class="forum-pane-title">TRADE FORUM</div>
           <div class="chat-msgs">
             <div class="chat-msg" v-for="offer in tradeOffers" :key="offer.id">
-              <div class="msg-user" :style="{ color: getUserColor(offer.user) }">{{ offer.user }}</div>
-              <div style="display: flex; flex-direction: column; gap: 8px;">
-                <div style="display: flex; align-items: center; gap: 8px; justify-content: space-between;">
+              <div class="msg-user" :class="getUserColorClass(offer.user)">{{ offer.user }}</div>
+              <div class="trade-rows">
+                <div class="trade-row">
                   <span>Offering: {{ offer.offering }}</span>
                   <img
                     v-if="getOfferIcon(offer.offering)"
                     :src="getOfferIcon(offer.offering)!.src"
                     :alt="getOfferIcon(offer.offering)!.alt"
-                    style="width: 40px; height: 40px; object-fit: contain;"
+                    class="trade-icon"
                   />
                 </div>
-                <div style="display: flex; align-items: center; gap: 8px; justify-content: space-between;">
+                <div class="trade-row">
                   <span>Wants: {{ offer.wants }}</span>
                   <img
                     v-if="getOfferIcon(offer.wants)"
                     :src="getOfferIcon(offer.wants)!.src"
                     :alt="getOfferIcon(offer.wants)!.alt"
-                    style="width: 40px; height: 40px; object-fit: contain;"
+                    class="trade-icon"
                   />
                 </div>
               </div>
-              <div style="display: flex; justify-content: center; width: 100%; margin-top: 12px;">
-                <button
+              <div class="trade-action-wrap">
+                <ion-button
                   class="btn-buy"
                   :disabled="!canAcceptTrade(offer)"
                   @click="acceptTrade(offer)"
                 >
                   Accept
-                </button>
+                </ion-button>
               </div>
             </div>
           </div>
           <div class="chat-input-row">
-            <button class="btn-send" style="width: 100%;">Publish an offer</button>
+            <ion-button class="btn-send forum-offer-btn">Publish an offer</ion-button>
           </div>
         </section>
       </div>
@@ -211,47 +213,31 @@
       </div>
       <div class="option-row">
         <span class="option-label">Music</span>
-        <div class="toggle-switch" :class="{ on: opts.music }" @click="opts.music = !opts.music">
-          <div class="toggle-knob"></div>
-        </div>
+        <ion-toggle class="option-toggle" v-model="opts.music"></ion-toggle>
       </div>
       <div class="option-row">
         <span class="option-label">SFX</span>
-        <div class="toggle-switch" :class="{ on: opts.sfx }" @click="opts.sfx = !opts.sfx">
-          <div class="toggle-knob"></div>
-        </div>
+        <ion-toggle class="option-toggle" v-model="opts.sfx"></ion-toggle>
       </div>
       <div class="option-row">
         <span class="option-label">Notifications</span>
-        <div class="toggle-switch" :class="{ on: opts.notifs }" @click="opts.notifs = !opts.notifs">
-          <div class="toggle-knob"></div>
-        </div>
+        <ion-toggle class="option-toggle" v-model="opts.notifs"></ion-toggle>
       </div>
       <div class="option-row">
         <span class="option-label">Volume</span>
-        <input type="range" class="volume-slider" min="0" max="100" v-model="opts.volume" />
+        <ion-range class="volume-slider" :min="0" :max="100" v-model="opts.volume"></ion-range>
       </div>
       <div class="option-row">
         <span class="option-label">Language</span>
-        <select
-          style="
-            background: rgba(0, 0, 0, 0.5);
-            color: #fff;
-            border: 2px solid var(--brown);
-            border-radius: 8px;
-            padding: 6px;
-            font-family: var(--font);
-            font-size: 14px;
-          "
-        >
-          <option>English</option>
-          <option>Español</option>
-          <option>Català</option>
-        </select>
+        <ion-select class="option-select" value="English" interface="popover">
+          <ion-select-option value="English">English</ion-select-option>
+          <ion-select-option value="Español">Español</ion-select-option>
+          <ion-select-option value="Català">Català</ion-select-option>
+        </ion-select>
       </div>
       <div class="option-row">
-        <span class="option-label" style="font-size: 18px">Account</span>
-        <button class="btn-buy" @click="$router.push('/')">Log Out</button>
+        <span class="option-label option-label-lg">Account</span>
+        <ion-button class="btn-buy" @click="$router.push('/')">Log Out</ion-button>
       </div>
     </div>
 
@@ -259,34 +245,62 @@
     <div class="popup-overlay" v-if="catchPopup"></div>
     <div class="catch-popup" v-if="catchPopup">
       Caught a {{ catchPopup.name }}!<br />
-      <img :src="catchPopup.img" :alt="catchPopup.name" style="width: 64px; height: 64px; object-fit: contain; margin-top: 6px;" />
+      <img :src="catchPopup.img" :alt="catchPopup.name" class="catch-popup-img" />
     </div>
 
     <!-- ── MENU BAR ── -->
-    <nav class="menu-bar" @click.stop>
-      <div class="menu-tab" :class="{ active: activeTab === 'upgrades' }" @click="toggleTab('upgrades')">
-        <img src="@/assets/img/Upgrades.png" alt="Upgrades" />
+        <nav class="menu-bar" @click.stop>
+          <ion-grid class="menu-grid ion-no-padding">
+            <ion-row class="ion-no-margin ion-no-padding ion-justify-content-between">
+              <ion-col class="ion-no-padding">
+                <ion-button class="menu-tab" :class="{ active: activeTab === 'upgrades' }" @click="toggleTab('upgrades')">
+                  <img src="@/assets/img/Upgrades.png" alt="Upgrades" />
+                </ion-button>
+              </ion-col>
+              <ion-col class="ion-no-padding">
+                <ion-button class="menu-tab" :class="{ active: activeTab === 'inventory' }" @click="toggleTab('inventory')">
+                  <img src="@/assets/img/Inventory.png" alt="Inventory" />
+                </ion-button>
+              </ion-col>
+              <ion-col class="ion-no-padding">
+                <ion-button class="menu-tab" :class="{ active: activeTab === 'missions' }" @click="toggleTab('missions')">
+                  <img src="@/assets/img/Missions.png" alt="Missions" />
+                </ion-button>
+              </ion-col>
+              <ion-col class="ion-no-padding">
+                <ion-button class="menu-tab" :class="{ active: activeTab === 'forum' }" @click="toggleTab('forum')">
+                  <img src="@/assets/img/Forum.png" alt="Forum" />
+                </ion-button>
+              </ion-col>
+              <ion-col class="ion-no-padding">
+                <ion-button class="menu-tab" :class="{ active: activeTab === 'options' }" @click="toggleTab('options')">
+                  <img src="@/assets/img/Options.png" alt="Options" />
+                </ion-button>
+              </ion-col>
+            </ion-row>
+          </ion-grid>
+        </nav>
       </div>
-      <div class="menu-tab" :class="{ active: activeTab === 'inventory' }" @click="toggleTab('inventory')">
-        <img src="@/assets/img/Inventory.png" alt="Inventory" />
-      </div>
-      <div class="menu-tab" :class="{ active: activeTab === 'missions' }" @click="toggleTab('missions')">
-        <img src="@/assets/img/Missions.png" alt="Missions" />
-      </div>
-      <div class="menu-tab" :class="{ active: activeTab === 'forum' }" @click="toggleTab('forum')">
-        <img src="@/assets/img/Forum.png" alt="Forum" />
-      </div>
-      <div class="menu-tab" :class="{ active: activeTab === 'options' }" @click="toggleTab('options')">
-        <img src="@/assets/img/Options.png" alt="Options" />
-      </div>
-    </nav>
-  </div>
+    </ion-content>
   </ion-page>
 </template>
 
 <script setup lang="ts">
 import { ref } from 'vue';
-import { IonPage } from '@ionic/vue';
+import {
+  IonPage,
+  IonContent,
+  IonGrid,
+  IonRow,
+  IonCol,
+  IonButton,
+  IonInput,
+  IonToggle,
+  IonRange,
+  IonSelect,
+  IonSelectOption,
+  IonProgressBar,
+} from '@ionic/vue';
 
 interface Fish {
   id: number;
@@ -545,9 +559,28 @@ const forumScrollStartX = ref(0);
 const forumChatScrollStartY = ref(0);
 const forumChatScrollEl = ref<HTMLElement | null>(null);
 
+function isInteractiveTarget(event: PointerEvent): boolean {
+  const path = event.composedPath();
+  return path.some((node) => {
+    if (!(node instanceof HTMLElement)) return false;
+    const tag = node.tagName;
+    return (
+      tag === 'BUTTON' ||
+      tag === 'INPUT' ||
+      tag === 'SELECT' ||
+      tag === 'TEXTAREA' ||
+      tag === 'ION-BUTTON' ||
+      tag === 'ION-INPUT' ||
+      tag === 'ION-SELECT' ||
+      tag === 'ION-TOGGLE' ||
+      tag === 'ION-RANGE'
+    );
+  });
+}
+
 function startForumDrag(event: PointerEvent) {
   const target = event.target as HTMLElement | null;
-  if (target?.closest('button, input, select, textarea')) return;
+  if (isInteractiveTarget(event)) return;
   const el = event.currentTarget as HTMLElement;
   isForumDragging.value = true;
   forumDragStartX.value = event.clientX;
@@ -587,8 +620,7 @@ const panelDragStartY = ref(0);
 const panelScrollStartY = ref(0);
 
 function startPanelDrag(event: PointerEvent) {
-  const target = event.target as HTMLElement | null;
-  if (target?.closest('button, input, select, textarea')) return;
+  if (isInteractiveTarget(event)) return;
   const el = event.currentTarget as HTMLElement;
   isPanelDragging.value = true;
   panelDragStartY.value = event.clientY;
@@ -632,13 +664,13 @@ function getOfferIcon(label: string): { src: string; alt: string } | null {
   return fish ? { src: fish.img, alt: fish.name } : null;
 }
 
-function getUserColor(name: string): string {
-  const colors = ['#7dd3fc', '#fca5a5', '#86efac', '#fde68a', '#c4b5fd', '#f9a8d4', '#93c5fd'];
+function getUserColorClass(name: string): string {
+  const totalColors = 7;
   let hash = 0;
   for (let i = 0; i < name.length; i += 1) {
-    hash = (hash * 31 + name.charCodeAt(i)) % colors.length;
+    hash = (hash * 31 + name.charCodeAt(i)) % totalColors;
   }
-  return colors[hash];
+  return `user-color-${hash}`;
 }
 
 function parseOffer(label: string): { type: 'coins' | 'fish'; qty: number; fish?: Fish } | null {

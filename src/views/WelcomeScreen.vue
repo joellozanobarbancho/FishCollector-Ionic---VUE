@@ -1,36 +1,31 @@
 <template>
   <ion-page>
-    <div class="screen" :style="{ position: 'absolute', inset: 0, display: 'flex', flexDirection: 'column' }">
-      <div class="scene-bg welcome-bg"></div>
-
-
-      <div
-        style="
-          position: relative;
-          z-index: 2;
-          flex: 1;
-          display: flex;
-          flex-direction: column;
-          align-items: center;
-          justify-content: center;
-          gap: 0;
-        "
-      >
-        <p class="welcome-title" style="margin-bottom: 40px;">
-          FISH<br />COLLECTOR:<br />IDLE
-        </p>
-        <div class="welcome-btns">
-          <button class="btn-main" @click="$router.push('/login')">Log In</button>
-          <button class="btn-main" @click="$router.push('/signup')">Sign In</button>
-          <button class="btn-main" @click="$router.push('/game')">Play as Guest</button>
-        </div>
+    <ion-content fullscreen class="screen-content ion-no-padding">
+      <div class="screen welcome-screen">
+        <div class="scene-bg welcome-bg"></div>
+        <ion-grid class="welcome-layout">
+          <ion-row class="ion-justify-content-center ion-align-items-center">
+            <ion-col size="12" class="ion-text-center">
+              <p class="welcome-title welcome-title-spacing">
+                FISH<br />COLLECTOR:<br />IDLE
+              </p>
+            </ion-col>
+            <ion-col size="12" size-sm="10" size-md="8">
+              <div class="welcome-btns">
+                <ion-button class="btn-main" @click="$router.push('/login')">Log In</ion-button>
+                <ion-button class="btn-main" @click="$router.push('/signup')">Sign In</ion-button>
+                <ion-button class="btn-main" @click="$router.push('/game')">Play as Guest</ion-button>
+              </div>
+            </ion-col>
+          </ion-row>
+        </ion-grid>
       </div>
-    </div>
+    </ion-content>
   </ion-page>
 </template>
 
 <script setup lang="ts">
-import { IonPage } from '@ionic/vue';
+import { IonPage, IonContent, IonGrid, IonRow, IonCol, IonButton } from '@ionic/vue';
 </script>
 
 <style scoped>
