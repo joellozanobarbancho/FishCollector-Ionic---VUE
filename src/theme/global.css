@@ -1,16 +1,3 @@
-/* ── Pixel font fallback ── */
-/* Load Minecrafta-Regular from local assets */
-@font-face {
-  /* corrected spelling – file is named Minecraftia-Regular.ttf */
-  font-family: 'Minecraftia-Regular';
-  src: url('../assets/fonts/Minecraftia-Regular.ttf') format('truetype');
-  /* optionally include a local lookup if the font is installed on the system */
-  /* src: local('Minecraftia Regular'), url('../assets/fonts/Minecraftia-Regular.ttf') format('truetype'); */
-  font-weight: normal;
-  font-style: normal;
-  font-display: swap;
-}
-
 :root {
   --blue-light: #54d4ff;
   --blue-dark: #007ea8;
@@ -163,11 +150,15 @@ body {
 
 /* coin icon for inline use with text (10px to match small text) */
 .coin-sm {
-  width: 10px;
-  height: 10px;
+  width: 14px;
+  height: 14px;
   display: inline-block;
   vertical-align: text-bottom;
   margin: 0 3px;
+}
+
+.coin-tight {
+  margin-left: 2px;
 }
 
 /* ── MENU BAR ── */
@@ -218,6 +209,12 @@ body {
   background: var(--panel-bg);
   border: 3px solid var(--brown);
   overflow-y: auto;
+  cursor: grab;
+  user-select: none;
+}
+
+.content-panel:active {
+  cursor: grabbing;
 }
 
 /* ── FISHING SCENE ── */
@@ -299,8 +296,9 @@ body {
 }
 
 .upgrade-name {
-  font-size: 19px;
-  color: #fff;
+  font-size: 21px;
+  color: #fff6cc;
+  font-weight: 700;
   text-shadow: var(--text-shadow);
   flex: 1;
   line-height: 1.5;
@@ -311,6 +309,13 @@ body {
   color: var(--amber);
   text-shadow: var(--text-shadow);
   margin-bottom: 4px;
+}
+
+.upgrade-desc {
+  font-size: 15px;
+  color: #f0f0f0;
+  text-shadow: var(--text-shadow);
+  opacity: 0.95;
 }
 
 .btn-buy {
@@ -345,6 +350,7 @@ body {
   justify-content: center;
   padding-left: 12px;
   padding-right: 12px;
+  align-self: center;
 }
 
 /* ── INVENTORY ── */
@@ -408,15 +414,18 @@ body {
 }
 
 .mission-title {
-  font-size: 19px;
-  color: var(--amber);
+  font-size: 21px;
+  color: #fff6cc;
+  font-weight: 700;
   text-shadow: var(--text-shadow);
-  margin-bottom: 8px;
+  margin-bottom: 10px;
 }
 
 .mission-desc {
   font-size: 15px;
-  color: #ddd;
+  color: #f0f0f0;
+  text-shadow: var(--text-shadow);
+  opacity: 0.95;
   line-height: 1.6;
 }
 
@@ -444,35 +453,78 @@ body {
 }
 
 /* ── FORUM ── */
-.forum-tabs {
+.forum-scroll {
   display: flex;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  scroll-behavior: smooth;
+  height: 100%;
+  cursor: grab;
+  user-select: none;
+}
+
+.forum-scroll:active {
+  cursor: grabbing;
+}
+
+.forum-pane {
+  min-width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  scroll-snap-align: start;
+  position: relative;
+}
+
+.forum-pane-title {
+  padding: 18px;
+  font-size: 20px;
+  color: var(--amber);
+  text-shadow: var(--text-shadow);
   border-bottom: 2px solid var(--brown);
 }
 
-.forum-tab {
-  flex: 1;
-  padding: 18px 12px;
-  text-align: center;
-  font-size: 15px;
-  color: #aaa;
-  font-family: var(--font);
-  cursor: pointer;
-  border: none;
-  background: transparent;
-}
-
-.forum-tab.active {
+.menu-panel-title {
+  padding: 18px;
+  font-size: 20px;
   color: var(--amber);
-  border-bottom: 3px solid var(--amber);
+  text-shadow: var(--text-shadow);
+  border-bottom: 2px solid var(--brown);
 }
 
 .chat-msgs {
-  padding: 12px;
+  padding: 16px;
   overflow-y: auto;
-  height: calc(100% - 100px);
+  height: calc(100% - 150px);
   display: flex;
   flex-direction: column;
   gap: 10px;
+}
+
+.chat-msgs::-webkit-scrollbar {
+  width: 4px;
+}
+
+.chat-msgs::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.chat-msgs::-webkit-scrollbar-thumb {
+  background: var(--brown);
+  border-radius: 2px;
+}
+
+.forum-scroll::-webkit-scrollbar {
+  height: 4px;
+}
+
+.forum-scroll::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.forum-scroll::-webkit-scrollbar-thumb {
+  background: var(--brown);
+  border-radius: 2px;
 }
 
 .chat-msg {
@@ -492,7 +544,7 @@ body {
 .chat-input-row {
   display: flex;
   gap: 8px;
-  padding: 14px 18px;
+  padding: 16px 20px;
   border-top: 2px solid var(--brown);
   position: absolute;
   bottom: 0;
@@ -519,7 +571,7 @@ body {
 .btn-send {
   background: linear-gradient(to bottom, var(--blue-light), var(--blue-dark));
   border: none;
-  border-radius: 8px;
+  border-radius: 20px;
   padding: 14px 20px;
   color: #fff;
   font-family: var(--font);

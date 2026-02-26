@@ -12,21 +12,28 @@
       />
     </div>
 
-    <!-- ── FISHING TAP (scene 1 & 2) ── -->
+    <!-- ── FISHING TAP ── -->
     <div class="fishing-tap-area" @click="tapFish" v-if="activeTab === 'fishing'">
       <span class="fishing-tap-text">Tap here<br />to fish!</span>
     </div>
 
     <!-- ── UPGRADES PANEL ── -->
-    <div class="content-panel" v-if="activeTab === 'upgrades'">
-      <div style="padding: 18px; font-size: 20px; color: var(--amber); text-shadow: var(--text-shadow)">
+    <div
+      class="content-panel"
+      v-if="activeTab === 'upgrades'"
+      @pointerdown="startPanelDrag"
+      @pointermove="onPanelDrag"
+      @pointerup="endPanelDrag"
+      @pointerleave="endPanelDrag"
+    >
+      <div class="menu-panel-title">
         UPGRADES
       </div>
       <div class="upgrade-item" v-for="upg in upgrades" :key="upg.id">
         <div>
           <div class="upgrade-name">{{ upg.name }}</div>
-          <div class="upgrade-cost"><img src="@/assets/img/Coin.png" class="coin-sm" alt="coin" /> {{ upg.cost }} coins</div>
-          <div style="font-size: 14px; color: #aaa; font-family: var(--font)">{{ upg.desc }}</div>
+          <div class="upgrade-cost">{{ upg.cost }}<img src="@/assets/img/Coin.png" class="coin-sm coin-tight" alt="coin" /></div>
+          <div class="upgrade-desc">{{ upg.desc }}</div>
         </div>
         <button class="btn-buy" :disabled="coins < upg.cost || upg.bought" @click="buyUpgrade(upg)">
           {{ upg.bought ? 'Owned' : 'Buy' }}
@@ -35,8 +42,15 @@
     </div>
 
     <!-- ── INVENTORY PANEL ── -->
-    <div class="content-panel" v-if="activeTab === 'inventory'">
-      <div style="padding: 18px; font-size: 20px; color: var(--amber); text-shadow: var(--text-shadow)">
+    <div
+      class="content-panel"
+      v-if="activeTab === 'inventory'"
+      @pointerdown="startPanelDrag"
+      @pointermove="onPanelDrag"
+      @pointerup="endPanelDrag"
+      @pointerleave="endPanelDrag"
+    >
+      <div class="menu-panel-title">
         YOUR CATCH
       </div>
       <div class="inv-grid">
@@ -57,8 +71,15 @@
     </div>
 
     <!-- ── MISSIONS PANEL ── -->
-    <div class="content-panel" v-if="activeTab === 'missions'">
-      <div style="padding: 18px; font-size: 20px; color: var(--amber); text-shadow: var(--text-shadow)">
+    <div
+      class="content-panel"
+      v-if="activeTab === 'missions'"
+      @pointerdown="startPanelDrag"
+      @pointermove="onPanelDrag"
+      @pointerup="endPanelDrag"
+      @pointerleave="endPanelDrag"
+    >
+      <div class="menu-panel-title">
         MISSIONS
       </div>
       <div class="mission-item" v-for="m in missions.filter(m => !m.completed)" :key="m.id">
@@ -70,7 +91,7 @@
               <div class="mission-bar" :style="{ width: Math.min(100, (m.progress / m.goal) * 100) + '%' }"></div>
             </div>
             <div class="mission-reward">
-              Reward: <img src="@/assets/img/Coin.png" class="coin-sm" alt="coin" /> {{ m.reward }} | {{ m.progress }}/{{ m.goal }}
+              Reward: {{ m.reward }}<img src="@/assets/img/Coin.png" class="coin-sm coin-tight" alt="coin" /> | {{ m.progress }}/{{ m.goal }}
             </div>
           </div>
           <button
@@ -102,41 +123,86 @@
     </div>
 
     <!-- ── FORUM PANEL ── -->
-    <div class="content-panel" v-if="activeTab === 'forum'" style="display: flex; flex-direction: column">
-      <div class="forum-tabs">
-        <button class="forum-tab" :class="{ active: forumTab === 'chat' }" @click="forumTab = 'chat'">
-          💬 Chat
-        </button>
-        <button class="forum-tab" :class="{ active: forumTab === 'trade' }" @click="forumTab = 'trade'">
-          🔄 Trade
-        </button>
-      </div>
-      <div class="chat-msgs" v-if="forumTab === 'chat'">
-        <div class="chat-msg" v-for="msg in chatMessages" :key="msg.id">
-          <div class="msg-user">{{ msg.user }}</div>
-          {{ msg.text }}
-        </div>
-      </div>
-      <div class="chat-msgs" v-if="forumTab === 'trade'">
-        <div class="chat-msg" v-for="offer in tradeOffers" :key="offer.id">
-          <div class="msg-user">{{ offer.user }}</div>
-          Offering: {{ offer.offering }} → Wants: {{ offer.wants }}
-        </div>
-      </div>
-      <div class="chat-input-row">
-        <input
-          class="chat-input"
-          v-model="chatInput"
-          :placeholder="forumTab === 'chat' ? 'Type a message...' : 'Post a trade offer...'"
-          @keyup.enter="sendChat"
-        />
-        <button class="btn-send" @click="sendChat">Send</button>
+    <div class="content-panel" v-if="activeTab === 'forum'">
+      <div
+        class="forum-scroll"
+        @scroll="handleForumScroll"
+        @pointerdown="startForumDrag"
+        @pointermove="onForumDrag"
+        @pointerup="endForumDrag"
+        @pointerleave="endForumDrag"
+      >
+        <section class="forum-pane">
+          <div class="forum-pane-title">PLAYER CHAT</div>
+          <div class="chat-msgs">
+            <div class="chat-msg" v-for="msg in chatMessages" :key="msg.id">
+              <div class="msg-user" :style="{ color: getUserColor(msg.user) }">{{ msg.user }}</div>
+              {{ msg.text }}
+            </div>
+          </div>
+          <div class="chat-input-row">
+            <input
+              class="chat-input"
+              v-model="chatInput"
+              placeholder="Type a message..."
+              @keyup.enter="sendChat"
+            />
+            <button class="btn-send" @click="sendChat">Send</button>
+          </div>
+        </section>
+        <section class="forum-pane">
+          <div class="forum-pane-title">TRADE FORUM</div>
+          <div class="chat-msgs">
+            <div class="chat-msg" v-for="offer in tradeOffers" :key="offer.id">
+              <div class="msg-user" :style="{ color: getUserColor(offer.user) }">{{ offer.user }}</div>
+              <div style="display: flex; flex-direction: column; gap: 8px;">
+                <div style="display: flex; align-items: center; gap: 8px; justify-content: space-between;">
+                  <span>Offering: {{ offer.offering }}</span>
+                  <img
+                    v-if="getOfferIcon(offer.offering)"
+                    :src="getOfferIcon(offer.offering)!.src"
+                    :alt="getOfferIcon(offer.offering)!.alt"
+                    style="width: 40px; height: 40px; object-fit: contain;"
+                  />
+                </div>
+                <div style="display: flex; align-items: center; gap: 8px; justify-content: space-between;">
+                  <span>Wants: {{ offer.wants }}</span>
+                  <img
+                    v-if="getOfferIcon(offer.wants)"
+                    :src="getOfferIcon(offer.wants)!.src"
+                    :alt="getOfferIcon(offer.wants)!.alt"
+                    style="width: 40px; height: 40px; object-fit: contain;"
+                  />
+                </div>
+              </div>
+              <div style="display: flex; justify-content: center; width: 100%; margin-top: 12px;">
+                <button
+                  class="btn-buy"
+                  :disabled="!canAcceptTrade(offer)"
+                  @click="acceptTrade(offer)"
+                >
+                  Accept
+                </button>
+              </div>
+            </div>
+          </div>
+          <div class="chat-input-row">
+            <button class="btn-send" style="width: 100%;">Publish an offer</button>
+          </div>
+        </section>
       </div>
     </div>
 
     <!-- ── OPTIONS PANEL ── -->
-    <div class="content-panel" v-if="activeTab === 'options'">
-      <div style="padding: 18px; font-size: 20px; color: var(--amber); text-shadow: var(--text-shadow)">
+    <div
+      class="content-panel"
+      v-if="activeTab === 'options'"
+      @pointerdown="startPanelDrag"
+      @pointermove="onPanelDrag"
+      @pointerup="endPanelDrag"
+      @pointerleave="endPanelDrag"
+    >
+      <div class="menu-panel-title">
         OPTIONS
       </div>
       <div class="option-row">
@@ -316,16 +382,16 @@ const chatInput = ref('');
 
 // Upgrades
 const upgrades = ref<Upgrade[]>([
-  { id: 1, name: 'Fishing Rod Upgrade 1', desc: 'Catch rare fish more often', cost: 50, bought: false },
+  { id: 1, name: 'Fishing upgrade 1', desc: 'Catch rare fish more often', cost: 50, bought: false },
   { id: 2, name: 'Faster Fishing', desc: 'Reduce wait time by 20%', cost: 80, bought: false },
-  { id: 3, name: 'Fishing Rod Upgrade 2', desc: 'Even better fishing rod', cost: 150, bought: false },
+  { id: 3, name: 'Fishing upgrade 2', desc: 'Even better fishing rod', cost: 150, bought: false },
   { id: 4, name: 'Fish Spawn Rate Up', desc: 'More fish appear underwater', cost: 200, bought: false },
-  { id: 5, name: 'Fishing Rod Upgrade 3', desc: 'The ultimate rod', cost: 400, bought: false },
+  { id: 5, name: 'Fishing upgrade 3', desc: 'The ultimate rod', cost: 400, bought: false },
   { id: 6, name: 'Lucky Lure', desc: '+5 to rare fish chance', cost: 300, bought: false },
 ]);
 
 // Inventory
-const inventory = ref<Fish[]>([]);
+const inventory = ref<Fish[]>(FISH_TYPES.map((fish) => ({ ...fish, count: 5 })));
 
 // Missions
 const missions = ref<Mission[]>([
@@ -345,7 +411,12 @@ const chatMessages = ref<ChatMessage[]>([
 
 const tradeOffers = ref<TradeOffer[]>([
   { id: 1, user: 'DeepSeaDave', offering: '3x Catfish', wants: '1x Pufferfish' },
-  { id: 2, user: 'FishKing', offering: '5x Anchovy', wants: '2x Clownfish' },
+  { id: 2, user: 'FishKing', offering: '2x Clownfish', wants: '5x Anchovy' },
+  { id: 3, user: 'TroutTrader', offering: '2x Rainbow Trout', wants: '1x Angelfish' },
+  { id: 4, user: 'PearlDiver', offering: '40 coins', wants: '1x Pufferfish' },
+  { id: 5, user: 'ReefRider', offering: '3x Clownfish', wants: '2x Catfish' },
+  { id: 6, user: 'SurgSniper', offering: '75 coins', wants: '1x Surgeonfish' },
+  { id: 7, user: 'GoldGills', offering: '4x Goldfish', wants: '30 coins' },
 ]);
 
 // Options
@@ -417,16 +488,21 @@ function buyUpgrade(upg: Upgrade) {
 }
 
 function sellFish(fish: Fish) {
-  const val = fish.value * (fish.count || 0);
+  if (!fish.count || fish.count <= 0) return;
+
+  const val = fish.value;
   coins.value += val;
-  
+
   // Update coin collector mission (only if accepted)
   const coinCollector = missions.value.find(m => m.id === 5);
   if (coinCollector?.accepted) {
     coinCollector.progress = Math.min(coinCollector.goal, coinCollector.progress + val);
   }
-  
-  inventory.value = inventory.value.filter((f) => f.id !== fish.id);
+
+  fish.count -= 1;
+  if (fish.count <= 0) {
+    inventory.value = inventory.value.filter((f) => f.id !== fish.id);
+  }
 }
 
 function acceptMission(mission: Mission) {
@@ -441,22 +517,190 @@ function claimReward(mission: Mission) {
 function sendChat() {
   if (!chatInput.value.trim()) return;
 
-  if (forumTab.value === 'chat') {
-    chatMessages.value.push({
-      id: Date.now(),
-      user: 'You',
-      text: chatInput.value,
-    });
-  } else {
-    tradeOffers.value.push({
-      id: Date.now(),
-      user: 'You',
-      offering: chatInput.value,
-      wants: '?',
-    });
-  }
+  chatMessages.value.push({
+    id: Date.now(),
+    user: 'You',
+    text: chatInput.value,
+  });
 
   chatInput.value = '';
+}
+
+function handleForumScroll(event: Event) {
+  const el = event.target as HTMLElement;
+  const isTrade = el.scrollLeft >= el.clientWidth * 0.5;
+  forumTab.value = isTrade ? 'trade' : 'chat';
+}
+
+const isForumDragging = ref(false);
+const forumDragStartX = ref(0);
+const forumDragStartY = ref(0);
+const forumScrollStartX = ref(0);
+const forumChatScrollStartY = ref(0);
+const forumChatScrollEl = ref<HTMLElement | null>(null);
+
+function startForumDrag(event: PointerEvent) {
+  const target = event.target as HTMLElement | null;
+  if (target?.closest('button, input, select, textarea')) return;
+  const el = event.currentTarget as HTMLElement;
+  isForumDragging.value = true;
+  forumDragStartX.value = event.clientX;
+  forumDragStartY.value = event.clientY;
+  forumScrollStartX.value = el.scrollLeft;
+  forumChatScrollEl.value = target?.closest('.chat-msgs') as HTMLElement | null;
+  forumChatScrollStartY.value = forumChatScrollEl.value ? forumChatScrollEl.value.scrollTop : 0;
+  el.setPointerCapture(event.pointerId);
+}
+
+function onForumDrag(event: PointerEvent) {
+  if (!isForumDragging.value) return;
+  const el = event.currentTarget as HTMLElement;
+  const deltaX = event.clientX - forumDragStartX.value;
+  const deltaY = event.clientY - forumDragStartY.value;
+  el.scrollLeft = forumScrollStartX.value - deltaX;
+  if (forumChatScrollEl.value) {
+    forumChatScrollEl.value.scrollTop = forumChatScrollStartY.value - deltaY;
+  }
+}
+
+function endForumDrag(event: PointerEvent) {
+  const el = event.currentTarget as HTMLElement;
+  if (isForumDragging.value) {
+    isForumDragging.value = false;
+    forumChatScrollEl.value = null;
+    try {
+      el.releasePointerCapture(event.pointerId);
+    } catch {
+      // no-op
+    }
+  }
+}
+
+const isPanelDragging = ref(false);
+const panelDragStartY = ref(0);
+const panelScrollStartY = ref(0);
+
+function startPanelDrag(event: PointerEvent) {
+  const target = event.target as HTMLElement | null;
+  if (target?.closest('button, input, select, textarea')) return;
+  const el = event.currentTarget as HTMLElement;
+  isPanelDragging.value = true;
+  panelDragStartY.value = event.clientY;
+  panelScrollStartY.value = el.scrollTop;
+  el.setPointerCapture(event.pointerId);
+}
+
+function onPanelDrag(event: PointerEvent) {
+  if (!isPanelDragging.value) return;
+  const el = event.currentTarget as HTMLElement;
+  const delta = event.clientY - panelDragStartY.value;
+  el.scrollTop = panelScrollStartY.value - delta;
+}
+
+function endPanelDrag(event: PointerEvent) {
+  const el = event.currentTarget as HTMLElement;
+  if (isPanelDragging.value) {
+    isPanelDragging.value = false;
+    try {
+      el.releasePointerCapture(event.pointerId);
+    } catch {
+      // no-op
+    }
+  }
+}
+
+function getFishByName(label: string): Fish | undefined {
+  const clean = label
+    .replace(/\d+\s*x\s*/i, '')
+    .replace(/\d+\s*/i, '')
+    .trim()
+    .toLowerCase();
+  return FISH_TYPES.find((fish) => fish.name.toLowerCase() === clean);
+}
+
+function getOfferIcon(label: string): { src: string; alt: string } | null {
+  if (/\bcoins?\b/i.test(label) || /\b\d+\s*coins?\b/i.test(label)) {
+    return { src: new URL('../assets/img/Coin.png', import.meta.url).href, alt: 'Coins' };
+  }
+  const fish = getFishByName(label);
+  return fish ? { src: fish.img, alt: fish.name } : null;
+}
+
+function getUserColor(name: string): string {
+  const colors = ['#7dd3fc', '#fca5a5', '#86efac', '#fde68a', '#c4b5fd', '#f9a8d4', '#93c5fd'];
+  let hash = 0;
+  for (let i = 0; i < name.length; i += 1) {
+    hash = (hash * 31 + name.charCodeAt(i)) % colors.length;
+  }
+  return colors[hash];
+}
+
+function parseOffer(label: string): { type: 'coins' | 'fish'; qty: number; fish?: Fish } | null {
+  const coinMatch = label.match(/(\d+)\s*coins?/i);
+  if (coinMatch) {
+    return { type: 'coins', qty: Number(coinMatch[1]) };
+  }
+
+  const qtyMatch = label.match(/(\d+)\s*x\s*/i);
+  const qty = qtyMatch ? Number(qtyMatch[1]) : 1;
+  const fish = getFishByName(label);
+  if (!fish) return null;
+  return { type: 'fish', qty, fish };
+}
+
+function getInventoryCount(fishId: number): number {
+  const item = inventory.value.find((f) => f.id === fishId);
+  return item?.count || 0;
+}
+
+function addFish(fish: Fish, qty: number) {
+  const existing = inventory.value.find((f) => f.id === fish.id);
+  if (existing) {
+    existing.count = (existing.count || 0) + qty;
+  } else {
+    inventory.value.push({ ...fish, count: qty });
+  }
+}
+
+function removeFish(fishId: number, qty: number) {
+  const existing = inventory.value.find((f) => f.id === fishId);
+  if (!existing || (existing.count || 0) < qty) return;
+  const newCount = (existing.count || 0) - qty;
+  if (newCount <= 0) {
+    inventory.value = inventory.value.filter((f) => f.id !== fishId);
+  } else {
+    existing.count = newCount;
+  }
+}
+
+function canAcceptTrade(offer: TradeOffer): boolean {
+  const wants = parseOffer(offer.wants);
+  const giving = wants;
+  if (!giving) return false;
+  if (giving.type === 'coins') return coins.value >= giving.qty;
+  return getInventoryCount(giving.fish!.id) >= giving.qty;
+}
+
+function acceptTrade(offer: TradeOffer) {
+  if (!canAcceptTrade(offer)) return;
+
+  const wants = parseOffer(offer.wants);
+  const offering = parseOffer(offer.offering);
+  if (!wants || !offering) return;
+
+  if (wants.type === 'coins') {
+    coins.value -= wants.qty;
+  } else {
+    removeFish(wants.fish!.id, wants.qty);
+  }
+
+  if (offering.type === 'coins') {
+    coins.value += offering.qty;
+  } else {
+    addFish(offering.fish!, offering.qty);
+  }
+
+  tradeOffers.value = tradeOffers.value.filter((o) => o.id !== offer.id);
 }
 </script>
 
