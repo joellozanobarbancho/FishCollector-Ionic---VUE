@@ -7,14 +7,9 @@
       <span class="coin-count">{{ coins }}</span>
       <img
         class="coin-icon"
-        src="https://www.figma.com/api/mcp/asset/fadbfd7e-171d-4cb3-b337-bdd3719e52a0"
+        src="@/assets/img/Coin.png"
         alt="coins"
       />
-    </div>
-
-    <!-- Change scene button -->
-    <div class="top-bar">
-      <button class="btn-change-scene" @click="toggleScene">Change<br />Scene</button>
     </div>
 
     <!-- ── FISHING TAP (scene 1 & 2) ── -->
@@ -24,10 +19,13 @@
 
     <!-- ── UPGRADES PANEL ── -->
     <div class="content-panel" v-if="activeTab === 'upgrades'">
+      <div style="padding: 14px; font-size: 16px; color: var(--amber); text-shadow: var(--text-shadow)">
+        UPGRADES
+      </div>
       <div class="upgrade-item" v-for="upg in upgrades" :key="upg.id">
         <div>
           <div class="upgrade-name">{{ upg.name }}</div>
-          <div class="upgrade-cost">🪙 {{ upg.cost }} coins</div>
+          <div class="upgrade-cost"><img src="@/assets/img/Coin.png" class="coin-sm" alt="coin" /> {{ upg.cost }} coins</div>
           <div style="font-size: 9px; color: #aaa; font-family: var(--font)">{{ upg.desc }}</div>
         </div>
         <button class="btn-buy" :disabled="coins < upg.cost || upg.bought" @click="buyUpgrade(upg)">
@@ -38,7 +36,7 @@
 
     <!-- ── INVENTORY PANEL ── -->
     <div class="content-panel" v-if="activeTab === 'inventory'">
-      <div style="padding: 14px; font-size: 11px; color: var(--amber); text-shadow: var(--text-shadow)">
+      <div style="padding: 14px; font-size: 16px; color: var(--amber); text-shadow: var(--text-shadow)">
         YOUR CATCH
       </div>
       <div class="inv-grid">
@@ -60,7 +58,7 @@
 
     <!-- ── MISSIONS PANEL ── -->
     <div class="content-panel" v-if="activeTab === 'missions'">
-      <div style="padding: 14px; font-size: 11px; color: var(--amber); text-shadow: var(--text-shadow)">
+      <div style="padding: 14px; font-size: 16px; color: var(--amber); text-shadow: var(--text-shadow)">
         MISSIONS
       </div>
       <div class="mission-item" v-for="m in missions.filter(m => !m.completed)" :key="m.id">
@@ -72,7 +70,7 @@
               <div class="mission-bar" :style="{ width: Math.min(100, (m.progress / m.goal) * 100) + '%' }"></div>
             </div>
             <div class="mission-reward">
-              Reward: 🪙 {{ m.reward }} | {{ m.progress }}/{{ m.goal }}
+              Reward: <img src="@/assets/img/Coin.png" class="coin-sm" alt="coin" /> {{ m.reward }} | {{ m.progress }}/{{ m.goal }}
             </div>
           </div>
           <button
@@ -138,7 +136,7 @@
 
     <!-- ── OPTIONS PANEL ── -->
     <div class="content-panel" v-if="activeTab === 'options'">
-      <div style="padding: 14px; font-size: 11px; color: var(--amber); text-shadow: var(--text-shadow)">
+      <div style="padding: 14px; font-size: 16px; color: var(--amber); text-shadow: var(--text-shadow)">
         OPTIONS
       </div>
       <div class="option-row">
@@ -178,7 +176,7 @@
         >
           <option>English</option>
           <option>Español</option>
-          <option>Français</option>
+          <option>Català</option>
         </select>
       </div>
       <div class="option-row">
@@ -196,19 +194,19 @@
     <!-- ── MENU BAR ── -->
     <nav class="menu-bar">
       <div class="menu-tab" :class="{ active: activeTab === 'upgrades' }" @click="toggleTab('upgrades')">
-        <img src="https://www.figma.com/api/mcp/asset/bf197f40-f83a-4dc4-865d-1a637dca3236" alt="Upgrades" />
+        <img src="@/assets/img/Upgrades.png" alt="Upgrades" />
       </div>
       <div class="menu-tab" :class="{ active: activeTab === 'inventory' }" @click="toggleTab('inventory')">
-        <img src="https://www.figma.com/api/mcp/asset/d8bd660b-8da4-4a9d-8798-1419c175b277" alt="Inventory" />
+        <img src="@/assets/img/Inventory.png" alt="Inventory" />
       </div>
       <div class="menu-tab" :class="{ active: activeTab === 'missions' }" @click="toggleTab('missions')">
-        <img src="https://www.figma.com/api/mcp/asset/9c0f7767-95fa-4e94-a354-a434577ffc86" alt="Missions" />
+        <img src="@/assets/img/Missions.png" alt="Missions" />
       </div>
       <div class="menu-tab" :class="{ active: activeTab === 'forum' }" @click="toggleTab('forum')">
-        <img src="https://www.figma.com/api/mcp/asset/9c26c088-ac8b-4159-850b-38712aaac99a" alt="Forum" />
+        <img src="@/assets/img/Forum.png" alt="Forum" />
       </div>
       <div class="menu-tab" :class="{ active: activeTab === 'options' }" @click="toggleTab('options')">
-        <img src="https://www.figma.com/api/mcp/asset/64f325f7-7f7b-4f22-b96e-2ab17d2441cf" alt="Options" />
+        <img src="@/assets/img/Options.png" alt="Options" />
       </div>
     </nav>
   </div>
@@ -261,49 +259,49 @@ const FISH_TYPES: Fish[] = [
   {
     id: 1,
     name: 'Catfish',
-    img: 'https://www.figma.com/api/mcp/asset/10b6636b-f511-4e61-83cd-ef0059216c04',
+    img: new URL('../assets/img/Catfish.png', import.meta.url).href,
     value: 5,
   },
   {
     id: 2,
     name: 'Goldfish',
-    img: 'https://www.figma.com/api/mcp/asset/c34a8ab1-4501-4c37-89cf-2e5b274ffd56',
+    img: new URL('../assets/img/Goldfish.png', import.meta.url).href,
     value: 8,
   },
   {
     id: 3,
     name: 'Rainbow Trout',
-    img: 'https://www.figma.com/api/mcp/asset/78f5eddf-3433-4636-a0ad-de298e4c41a8',
+    img: new URL('../assets/img/RainbowTrout.png', import.meta.url).href,
     value: 12,
   },
   {
     id: 4,
     name: 'Angelfish',
-    img: 'https://www.figma.com/api/mcp/asset/cae5f564-8f23-496b-a1ea-7386e3387c02',
+    img: new URL('../assets/img/Angelfish.png', import.meta.url).href,
     value: 15,
   },
   {
     id: 5,
     name: 'Pufferfish',
-    img: 'https://www.figma.com/api/mcp/asset/f603750f-066c-484c-abf6-fa65e7784ed6',
+    img: new URL('../assets/img/Pufferfish.png', import.meta.url).href,
     value: 20,
   },
   {
     id: 6,
     name: 'Clownfish',
-    img: 'https://www.figma.com/api/mcp/asset/75ecca58-a1a9-4f78-9c16-6efc7304f659',
+    img: new URL('../assets/img/Clownfish.png', import.meta.url).href,
     value: 18,
   },
   {
     id: 7,
     name: 'Anchovy',
-    img: 'https://www.figma.com/api/mcp/asset/e04f371a-f1d4-48f1-95e6-f62504e1580f',
+    img: new URL('../assets/img/Anchovy.png', import.meta.url).href,
     value: 3,
   },
   {
     id: 8,
     name: 'Surgeonfish',
-    img: 'https://www.figma.com/api/mcp/asset/bdc0108d-b943-4f40-b1ec-5177d85769b5',
+    img: new URL('../assets/img/Surgeonfish.png', import.meta.url).href,
     value: 25,
   },
 ];
@@ -314,7 +312,6 @@ const forumTab = ref<string>('chat');
 const coins = ref(150);
 const catchPopup = ref<string | null>(null);
 const catchValue = ref(0);
-const scene = ref(1);
 const chatInput = ref('');
 
 // Upgrades
@@ -357,10 +354,6 @@ const opts = ref({ music: true, sfx: true, notifs: false, volume: 70 });
 
 
 // Methods
-function toggleScene() {
-  scene.value = scene.value === 1 ? 2 : 1;
-}
-
 function toggleTab(tabName: string) {
   // If clicking the currently active tab, close it
   if (activeTab.value === tabName) {

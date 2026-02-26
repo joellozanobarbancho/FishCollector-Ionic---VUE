@@ -1,8 +1,11 @@
 /* ── Pixel font fallback ── */
 /* Load Minecrafta-Regular from local assets */
 @font-face {
-  font-family: 'Minecrafta-Regular';
-  src: url('/src/assets/fonts/Minecrafta-Regular.ttf') format('truetype');
+  /* corrected spelling – file is named Minecraftia-Regular.ttf */
+  font-family: 'Minecraftia-Regular';
+  src: url('../assets/fonts/Minecraftia-Regular.ttf') format('truetype');
+  /* optionally include a local lookup if the font is installed on the system */
+  /* src: local('Minecraftia Regular'), url('../assets/fonts/Minecraftia-Regular.ttf') format('truetype'); */
   font-weight: normal;
   font-style: normal;
   font-display: swap;
@@ -15,7 +18,7 @@
   --brown: #884000;
   --panel-bg: rgba(107, 107, 107, 0.55);
   --border-col: #884000;
-  --font: 'Minecrafta-Regular', monospace;
+  --font: 'Fixedsys', monospace;
   --text-shadow: 0 4px 4px rgba(0, 0, 0, 0.35);
 }
 
@@ -64,11 +67,7 @@ body {
 }
 
 .welcome-bg {
-  background-image: url('https://www.figma.com/api/mcp/asset/8f6c0bbe-0f16-4b61-9398-51e567e6ed5f');
-}
-
-.ocean-bg {
-  background-image: url('https://www.figma.com/api/mcp/asset/15cd351d-f187-4245-8d77-f970dc23dd8c');
+  background-image: url('/src/assets/img/WelcomeBackground.png');
 }
 
 /* Game screen background (local asset) */
@@ -130,35 +129,7 @@ body {
   z-index: 1;
 }
 
-/* ── TOP BAR ── */
-.top-bar {
-  position: absolute;
-  top: 13px;
-  right: 13px;
-  z-index: 10;
-}
-
-.btn-change-scene {
-  background: linear-gradient(to bottom, var(--blue-light), var(--blue-dark));
-  border: none;
-  border-radius: 20px;
-  padding: 10px 14px;
-  color: #fff;
-  font-family: var(--font);
-  font-size: 13px;
-  line-height: 1.4;
-  text-align: center;
-  text-shadow: var(--text-shadow);
-  box-shadow: 0 4px 4px rgba(0, 0, 0, 0.25);
-  cursor: pointer;
-  transition: transform 0.1s;
-}
-
-.btn-change-scene:active {
-  transform: scale(0.95);
-}
-
-/* ── COIN COUNTER ── */
+/* ── COIN// COUNTER ── */
 .coin-counter {
   position: absolute;
   top: 117px;
@@ -177,8 +148,26 @@ body {
 }
 
 .coin-icon {
-  width: 54px;
-  height: 54px;
+  width: 36px;
+  height: 36px;
+}
+
+/* inline coin icon for use within text */
+.inline-coin {
+  width: 7px;
+  height: 7px;
+  display: inline-block;
+  vertical-align: text-bottom;
+  margin: 0 3px;
+}
+
+/* coin icon for inline use with text (10px to match small text) */
+.coin-sm {
+  width: 10px;
+  height: 10px;
+  display: inline-block;
+  vertical-align: text-bottom;
+  margin: 0 3px;
 }
 
 /* ── MENU BAR ── */
