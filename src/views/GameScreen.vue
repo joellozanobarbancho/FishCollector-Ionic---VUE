@@ -239,6 +239,27 @@
         <span class="option-label option-label-lg">Account</span>
         <ion-button class="btn-buy" @click="$router.push('/')">Log Out</ion-button>
       </div>
+      <div class="stats-divider"></div>
+      <div class="stats-section">
+        <div class="stats-title">PLAYER STATISTICS</div>
+        <div class="stats-grid">
+          <div class="stat-box">
+            <div class="stat-value">{{ totalCoinsEarned }}</div>
+            <div class="stat-label">Coins Earned</div>
+          </div>
+          <div class="stat-box">
+            <div class="stat-value">{{ totalFishCaught }}</div>
+            <div class="stat-label">Fish Caught</div>
+          </div>
+          <div class="stat-box">
+            <div class="stat-value">{{ missions.filter(m => m.completed).length }}</div>
+            <div class="stat-label">Missions Done</div>
+          </div>
+        </div>
+        <div class="chart-container">
+          <canvas ref="chartContainer" id="statsChart"></canvas>
+        </div>
+      </div>
     </div>
 
     <!-- catch popup -->
@@ -301,6 +322,10 @@ import {
   IonSelectOption,
   IonProgressBar,
 } from '@ionic/vue';
+import { Haptics, ImpactStyle } from '@capacitor/haptics';
+import { Keyboard } from '@capacitor/keyboard';
+import Chart from 'chart.js/auto';
+import { onMounted } from 'vue';
 
 interface Fish {
   id: number;
@@ -399,6 +424,12 @@ const scene = ref<number>(1);
 const coins = ref(150);
 const catchPopup = ref<Fish | null>(null);
 const chatInput = ref('');
+const chartContainer = ref<HTMLCanvasElement | null>(null);
+let chartInstance: Chart | null = null;
+
+// Statistics
+const totalCoinsEarned = ref(0);
+const totalFishCaught = ref(0);
 
 // Upgrades
 const upgrades = ref<Upgrade[]>([
@@ -463,8 +494,11 @@ function handleScreenClick() {
 
 let catchTimer: NodeJS.Timeout | null = null;
 
-function tapFish() {
+async function tapFish() {
   if (catchTimer) return; // debounce
+
+  // Vibración al pescar
+  await Haptics.impact({ style: ImpactStyle.Light });
 
   const roll = Math.random();
   let fish: Fish;
@@ -486,6 +520,10 @@ function tapFish() {
     inventory.value.push({ ...fish, count: 1 });
   }
 
+  // Update statistics
+  totalFishCaught.value += 1;
+  updateChart();
+
   // Update missions (only for accepted missions)
   const firstCatch = missions.value.find(m => m.id === 1);
   if (firstCatch?.accepted) firstCatch.progress = Math.min(firstCatch.goal, firstCatch.progress + 1);
@@ -500,6 +538,12 @@ function tapFish() {
   if (rareHunter?.accepted && fish.id === 8) rareHunter.progress = Math.min(rareHunter.goal, rareHunter.progress + 1);
 
   catchPopup.value = fish;
+  
+  // Vibración más fuerte al atrapar pez raro
+  if (fish.value > 15) {
+    await Haptics.impact({ style: ImpactStyle.Heavy });
+  }
+
   catchTimer = setTimeout(() => {
     catchPopup.value = null;
     catchTimer = null;
@@ -518,6 +562,10 @@ function sellFish(fish: Fish) {
 
   const val = fish.value;
   coins.value += val;
+
+  // Update statistics
+  totalCoinsEarned.value += val;
+  updateChart();
 
   // Update coin collector mission (only if accepted)
   const coinCollector = missions.value.find(m => m.id === 5);
@@ -540,7 +588,7 @@ function claimReward(mission: Mission) {
   mission.completed = true;
 }
 
-function sendChat() {
+async function sendChat() {
   if (!chatInput.value.trim()) return;
 
   chatMessages.value.push({
@@ -550,6 +598,9 @@ function sendChat() {
   });
 
   chatInput.value = '';
+
+  // Ocultar teclado automáticamente
+  await Keyboard.hide();
 }
 
 const isForumDragging = ref(false);
@@ -740,6 +791,72 @@ function acceptTrade(offer: TradeOffer) {
 
   tradeOffers.value = tradeOffers.value.filter((o) => o.id !== offer.id);
 }
+
+// Statistics chart
+function initChart() {
+  if (!chartContainer.value) return;
+  
+  // Destroy previous chart if exists
+  if (chartInstance) {
+    chartInstance.destroy();
+  }
+
+  const fishCounts = FISH_TYPES.map(fish => {
+    const inv = inventory.value.find(f => f.id === fish.id);
+    return inv?.count || 0;
+  });
+
+  chartInstance = new Chart(chartContainer.value, {
+    type: 'doughnut',
+    data: {
+      labels: FISH_TYPES.map(f => f.name),
+      datasets: [{
+        data: fishCounts,
+        backgroundColor: [
+          '#54d4ff',
+          '#007ea8',
+          '#fcdc2c',
+          '#884000',
+          '#88dd88',
+          '#ff88cc',
+          '#ffaa00',
+          '#00ffff'
+        ],
+        borderColor: 'rgba(107, 107, 107, 0.55)',
+        borderWidth: 2
+      }]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: true,
+      plugins: {
+        legend: {
+          display: true,
+          position: 'bottom',
+          labels: {
+            color: '#fff',
+            font: { family: 'Fixedsys, monospace', size: 10 },
+            padding: 12
+          }
+        }
+      }
+    }
+  });
+}
+
+function updateChart() {
+  // Re-initialize chart with updated data
+  if (chartInstance) {
+    initChart();
+  }
+}
+
+onMounted(() => {
+  // Initialize chart when component mounts
+  setTimeout(() => {
+    initChart();
+  }, 100);
+});
 </script>
 
 <style scoped>
