@@ -13,7 +13,7 @@
             <ion-col size="12" size-sm="10" size-md="8">
               <div class="welcome-btns">
                 <ion-button class="btn-main" @click="$router.push('/login')">Log In</ion-button>
-                <ion-button class="btn-main" @click="$router.push('/signup')">Sign In</ion-button>
+                <ion-button class="btn-main" @click="$router.push('/signup')">Sign Up</ion-button>
                 <ion-button class="btn-main" @click="$router.push('/game')">Play as Guest</ion-button>
               </div>
             </ion-col>

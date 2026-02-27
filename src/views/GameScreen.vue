@@ -139,7 +139,7 @@
       >
         <section class="forum-pane">
           <div class="forum-pane-title">PLAYER CHAT</div>
-          <div class="chat-msgs">
+          <div class="chat-msgs" ref="chatMsgsEl">
             <div class="chat-msg" v-for="msg in chatMessages" :key="msg.id">
               <div class="msg-user" :class="getUserColorClass(msg.user)">{{ msg.user }}</div>
               {{ msg.text }}
@@ -324,6 +324,7 @@ import {
 } from '@ionic/vue';
 import { Haptics, ImpactStyle } from '@capacitor/haptics';
 import { Keyboard } from '@capacitor/keyboard';
+import { StatusBar } from '@capacitor/status-bar';
 import { Chart } from 'chart.js';
 import { onMounted } from 'vue';
 
@@ -601,8 +602,15 @@ async function sendChat() {
 
   // Ocultar teclado automáticamente
   await Keyboard.hide();
+
+  // Scroll automático al último mensaje
+  setTimeout(() => {
+    const el = chatMsgsEl.value;
+    if (el) el.scrollTop = el.scrollHeight;
+  }, 50);
 }
 
+const chatMsgsEl = ref<HTMLElement | null>(null);
 const isForumDragging = ref(false);
 const forumDragStartX = ref(0);
 const forumDragStartY = ref(0);
@@ -852,6 +860,10 @@ function updateChart() {
 }
 
 onMounted(() => {
+  // Forzar fullscreen y ocultar status bar
+  StatusBar.hide();
+  StatusBar.setStyle({ style: 'dark' });
+  StatusBar.setBackgroundColor({ color: '#000000' });
   // Initialize chart when component mounts
   setTimeout(() => {
     initChart();
