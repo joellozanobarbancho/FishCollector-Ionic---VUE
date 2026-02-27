@@ -765,6 +765,8 @@ body {
 
 .chat-input-row {
   display: flex;
+  flex-wrap: nowrap;
+  align-items: center;
   gap: 8px;
   padding: 16px 20px;
   border-top: 2px solid var(--brown);
@@ -1145,11 +1147,20 @@ body {
   }
 
   .chat-input-row {
-    flex-direction: column;
+    flex-direction: row;
   }
 
-  .chat-input,
-  .btn-send,
+  .chat-input {
+    width: auto;
+    min-width: 0;
+    flex: 1;
+  }
+
+  .btn-send {
+    width: auto;
+    flex: 0 0 auto;
+  }
+
   .mission-action {
     width: 100%;
   }

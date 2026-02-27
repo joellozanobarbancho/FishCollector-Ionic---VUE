@@ -324,7 +324,7 @@ import {
 } from '@ionic/vue';
 import { Haptics, ImpactStyle } from '@capacitor/haptics';
 import { Keyboard } from '@capacitor/keyboard';
-import Chart from 'chart.js/auto';
+import { Chart } from 'chart.js';
 import { onMounted } from 'vue';
 
 interface Fish {
